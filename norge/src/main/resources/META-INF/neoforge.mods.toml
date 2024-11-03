@@ -35,3 +35,4 @@ side = "CLIENT"
 [mc-publish]
 modrinth = "${modrinth_id}"
 curseforge = "${curseforge_id}"
+loaders = [ "neoforge" ]

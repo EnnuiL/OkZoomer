@@ -4,6 +4,7 @@ import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.ok_zoomer.config.metadata.WidgetSize;
 import io.github.ennuil.ok_zoomer.config.screen.OkZoomerConfigScreen;
 import io.github.ennuil.ok_zoomer.events.ApplyLoadOnceOptionsEvent;
+import io.github.ennuil.ok_zoomer.utils.NorgeZoomUtils;
 import net.minecraft.client.Minecraft;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
@@ -21,5 +22,7 @@ public class OkZoomerClientMod {
 		ApplyLoadOnceOptionsEvent.readyClient(Minecraft.getInstance());
 
 		mod.registerExtensionPoint(IConfigScreenFactory.class, ((mod2, screen) -> new OkZoomerConfigScreen(screen)));
+
+		NorgeZoomUtils.addInitialPredicates();
 	}
 }

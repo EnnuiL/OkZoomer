@@ -18,12 +18,12 @@ public abstract class MouseHandlerMixin {
 			target = "Lnet/minecraft/client/Options;invertYMouse()Lnet/minecraft/client/OptionInstance;"
 		)
 	)
-	public void applyZoomChanges(double movementTime, CallbackInfo ci, @Local(ordinal = 1) LocalDoubleRef j, @Local(ordinal = 2) LocalDoubleRef k, @Local(ordinal = 5) double f) {
+	public void applyZoomChanges(double movementTime, CallbackInfo ci, @Local(ordinal = 1) LocalDoubleRef j, @Local(ordinal = 2) LocalDoubleRef k, @Local(ordinal = 5) double g) {
 		if (Zoom.isModifierActive()) {
 			double zoomDivisor = Zoom.isZooming() ? Zoom.getZoomDivisor() : 1.0;
 			double transitionDivisor = Zoom.getTransitionMode().getInternalMultiplier();
-			j.set(Zoom.getMouseModifier().applyXModifier(j.get(), f, movementTime, zoomDivisor, transitionDivisor));
-			k.set(Zoom.getMouseModifier().applyYModifier(k.get(), f, movementTime, zoomDivisor, transitionDivisor));
+			j.set(Zoom.getMouseModifier().applyXModifier(j.get(), g, movementTime, zoomDivisor, transitionDivisor));
+			k.set(Zoom.getMouseModifier().applyYModifier(k.get(), g, movementTime, zoomDivisor, transitionDivisor));
 		}
 	}
 }

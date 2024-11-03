@@ -1,0 +1,100 @@
+plugins {
+	id 'java'
+	id 'mod_conventions'
+	alias libs.plugins.quilt.loom
+}
+
+repositories {
+	mavenCentral()
+	maven { url = 'https://maven.terraformersmc.com/releases' }
+	maven { url = 'https://maven.parchmentmc.org' }
+	exclusiveContent {
+		forRepository {
+			maven { url = "https://api.modrinth.com/maven" }
+		}
+		filter {
+			includeGroup("maven.modrinth")
+		}
+	}
+	maven { url = 'https://maven.uuid.gg/releases' } // Up's Mods
+	// maven { url = 'https://maven.ladysnake.org/releases' }
+}
+
+base.archivesName = 'ok_zoomer-fabric'
+
+// All the dependencies are declared at gradle/libs.version.toml and referenced with "libs.<id>"
+// See https://docs.gradle.org/current/userguide/platforms.html for information on how version catalogs work.
+dependencies {
+	minecraft libs.minecraft
+	mappings loom.officialMojangMappings()
+	/* mappings(loom.layered {
+		it.officialMojangMappings()
+		it.parchment libs.parchment
+	}) */
+	modImplementation libs.quilt.loader
+	implementation project(':common').sourceSets.getByName('main').output
+
+	modImplementation libs.fabric.api
+
+	modCompileOnly libs.modmenu
+	modLocalRuntime libs.modmenu
+
+	modCompileOnly libs.wrench.wrapper
+
+	//modCompileOnly libs.bundles.trinkets
+	//modLocalRuntime libs.bundles.trinkets
+
+	include libs.wrench.wrapper
+}
+
+tasks.named('compileTestJava').configure {
+	it.enabled = false
+}
+
+tasks.named('test').configure {
+	it.enabled = false
+}
+
+loom {
+	/* if (project(':common').file('src/main/resources/ok_zoomer.accesswidener').exists()) {
+		accessWidenerPath = project(':common').file('src/main/resources/ok_zoomer.accesswidener')
+	} */
+
+	mixin {
+		useLegacyMixinAp = false
+	}
+
+	runs {
+		named('client') {
+			client()
+			configName = 'Fabric Client'
+			ideConfigGenerated(true)
+			runDir('run')
+		}
+	}
+}
+
+tasks.named('processResources').configure {
+	it.filteringCharset 'UTF-8'
+
+	it.from project(':common').tasks.named('processResources').get()
+
+	def expandProps = [
+		'version'                       : project.version,
+		'curseforge_id'					: project.curseforge_id,
+		'modrinth_id'					: project.modrinth_id,
+	]
+	it.inputs.properties(expandProps)
+
+	it.filesMatching('fabric.mod.json') {
+		it.expand expandProps
+	}
+}
+
+tasks.named('jar').configure {
+	it.duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+	from(zipTree(project(':common').tasks.named('jar').get().archiveFile))
+}
+
+remapJar.getDestinationDirectory().set(layout.buildDirectory.dir('libs'))

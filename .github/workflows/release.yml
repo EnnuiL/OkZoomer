@@ -40,18 +40,28 @@ jobs:
           github-token: ${{ github.token }}
           version: ${{ env.TAG }}
           files: |
-            build/libs/!(*-@(dev|sources|javadoc|slim)).jar
-            build/libs/*-@(sources|javadoc).jar
+            **/build/libs/!(*-@(dev|sources|javadoc|slim)).jar
+            **/build/libs/*-@(sources|javadoc).jar
       - name: Publish (Fabric)
         id: publish_fabric
         uses: Kir-Antipov/mc-publish@995edadc13559a8b28d0b7e6571229f067ec7659 # (new) v3.3.0
         with:
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
-          version: ${{ env.TAG }}+Fabric
+          version: ${{ env.TAG }}+fabric
           files: |
-            build/libs/!(*-@(dev|sources|javadoc|slim)).jar
-            build/libs/*-@(sources|javadoc).jar
+            fabric/build/libs/!(*-@(dev|sources|javadoc|slim)).jar
+            fabric/build/libs/*-@(sources|javadoc).jar
+      - name: Publish (Neo)
+        id: publish_neo
+        uses: Kir-Antipov/mc-publish@995edadc13559a8b28d0b7e6571229f067ec7659 # (new) v3.3.0
+        with:
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+          version: ${{ env.TAG }}+neo
+          files: |
+            norge/build/libs/!(*-@(dev|sources|javadoc|slim)).jar
+            norge/build/libs/*-@(sources|javadoc).jar
       - name: Notify Discord
         uses: Up-Mods/action-discord-release@main
         with:

@@ -1,0 +1,90 @@
+plugins {
+	id 'java'
+	id 'maven-publish'
+	id 'mod_conventions'
+	alias libs.plugins.moddevgradle
+}
+
+base.archivesName = 'ok_zoomer-neo'
+
+sourceSets {}
+
+repositories {
+	maven { url = 'https://maven.neoforged.net/releases/' }
+	maven { url = 'https://maven.uuid.gg/releases' } // Up's Mods
+}
+
+tasks.named('processResources').configure {
+	it.filteringCharset 'UTF-8'
+
+	def expandProps = [
+		'version'                       : project.version,
+		'curseforge_id'					: project.curseforge_id,
+		'modrinth_id'					: project.modrinth_id,
+	]
+	it.inputs.properties(expandProps)
+
+	it.filesMatching('META-INF/neoforge.mods.toml') {
+		it.expand expandProps
+	}
+}
+
+tasks.named('jar').configure {
+	it.filteringCharset 'UTF-8'
+
+	it.filesMatching('META-INF/neoforge.mods.toml') {
+		it.expand 'version': project.version
+	}
+}
+
+// IMS is funny
+Closure<Boolean> notNorgeTask = {
+	Task it -> !it.name.startsWith('neo') && !it.name.startsWith('norge') && !it.name.startsWith('compileService')
+}
+
+tasks.withType(JavaCompile).matching(notNorgeTask).configureEach {
+	it.source(project(':common').sourceSets.main.allSource)
+}
+
+tasks.withType(Javadoc).matching(notNorgeTask).configureEach {
+	it.source(project(':common').sourceSets.main.allJava)
+}
+
+tasks.withType(ProcessResources).matching(notNorgeTask).configureEach {
+	it.from project(':common').sourceSets.main.resources
+}
+
+tasks.jar.getDestinationDirectory().set(layout.buildDirectory.dir('libs'))
+
+neoForge {
+	version = libs.versions.neoforge
+
+	runs {
+		client {
+			client()
+		}
+	}
+
+	mods {
+		'ok_zoomer' {
+			sourceSet(sourceSets.main)
+		}
+	}
+}
+
+tasks.named('compileTestJava').configure {
+	it.enabled = false
+}
+
+configurations {
+	'implementation' {
+		exclude group: 'org.quiltmc', module: 'quilt-loader'
+	}
+}
+
+dependencies {
+	compileOnly project(':common').sourceSets.main.output
+	implementation libs.wrench.wrapper
+
+	jarJar libs.wrench.wrapper
+}

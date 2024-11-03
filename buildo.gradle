@@ -1,0 +1,152 @@
+plugins {
+	id 'maven-publish'
+	alias libs.plugins.quilt.loom
+}
+
+def javaVersion = 21
+
+group = project.maven_group_id
+
+def ENV = System.getenv()
+def now = new Date()
+
+version = ENV.TAG ?: "development-${now.format('YY.MMdd.HHmm', TimeZone.getTimeZone('UTC'))}+${libs.versions.minecraft.get()}${(!ENV.TAG && ENV.BUILD_NUMBER) ? "-build.${ENV.BUILD_NUMBER}" : ''}"
+
+base {
+	archivesName = "${rootProject.name}-Fabric"
+}
+
+repositories {
+	mavenCentral()
+	maven {
+		name = 'TerraformersMC'
+		url = 'https://maven.terraformersmc.com/releases'
+	}
+	maven {
+		name = 'ParchmentMC'
+		url = 'https://maven.parchmentmc.org'
+		content {
+			includeGroupByRegex 'org\\.parchmentmc(\\..*)?'
+		}
+	}
+	maven {
+		name = 'Modrinth'
+		url = 'https://api.modrinth.com/maven'
+		content {
+			includeGroup "maven.modrinth"
+		}
+	}
+	maven {
+		name = 'Up-Mods'
+		url = 'https://maven.uuid.gg/releases'
+	}
+	/*
+	maven {
+		name = "Ladysnake"
+		url = 'https://maven.ladysnake.org/releases'
+	}
+	 */
+}
+
+loom {
+	mods {
+		"${project.mod_id}" {
+			sourceSet('main')
+		}
+	}
+
+	// Mixin plugin needs this
+	mixin {
+		useLegacyMixinAp = true
+    }
+}
+
+// All the dependencies are declared at gradle/libs.version.toml and referenced with "libs.<id>"
+// See https://docs.gradle.org/current/userguide/platforms.html for information on how version catalogs work.
+dependencies {
+	minecraft libs.minecraft
+	mappings loom.officialMojangMappings()
+	/*
+	mappings(loom.layered {
+		it.officialMojangMappings()
+		it.parchment libs.parchment
+	})
+	 */
+	modImplementation libs.quilt.loader
+
+	modImplementation libs.fabric.api
+
+	modCompileOnly libs.modmenu
+	modLocalRuntime libs.modmenu
+
+	modCompileOnly libs.wrench.wrapper
+
+	//modCompileOnly libs.bundles.trinkets
+	//modLocalRuntime libs.bundles.trinkets
+
+	include libs.wrench.wrapper
+}
+
+processResources {
+	filteringCharset 'UTF-8'
+
+	def expandProps = [
+		'version'                       : version,
+		'maven_group_id'                : maven_group_id,
+		'mod_id'                        : mod_id,
+		'minecraft_version'             : libs.versions.minecraft.get(),
+		'curseforge_id'					: curseforge_id,
+		'modrinth_id'					: modrinth_id,
+	]
+
+	filesMatching('fabric.mod.json') {
+		expand expandProps
+	}
+	inputs.properties(expandProps)
+}
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(javaVersion)
+	}
+	withSourcesJar()
+	// withJavadocJar()
+}
+
+jar {
+	from('LICENSE.md') {
+		rename { "LICENSE_${base.archivesName.get()}.md" }
+	}
+}
+
+sourcesJar {
+	from('LICENSE.md') {
+		rename { "LICENSE_${base.archivesName.get()}.md" }
+	}
+}
+
+tasks.withType(JavaCompile).configureEach {
+	it.options.release.set(javaVersion)
+}
+
+// Configure the maven publication
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			artifactId "${rootProject.name}-Fabric"
+			from components.java
+		}
+	}
+
+	repositories {
+		if (ENV.MAVEN_UPLOAD_URL) {
+            maven {
+                url = ENV.MAVEN_UPLOAD_URL
+                credentials {
+                    username = ENV.MAVEN_UPLOAD_USERNAME
+                    password = ENV.MAVEN_UPLOAD_PASSWORD
+                }
+            }
+        }
+	}
+}

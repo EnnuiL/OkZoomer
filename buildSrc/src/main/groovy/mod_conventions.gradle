@@ -1,0 +1,23 @@
+String createVersionString() {
+	def ENV = System.getenv()
+	return ENV.TAG ?: "0.0.0-development${(!ENV.TAG && ENV.BUILD_NUMBER) ? "-build.${ENV.BUILD_NUMBER}" : ''}"
+}
+
+version = createVersionString()
+group = 'io.github.ennuil.ok_zoomer'
+
+tasks.named('jar').configure {
+	inputs.files('LICENSE.md')
+
+	it.from(rootDir.toPath().resolve('LICENSE.md')) {
+		it.rename { "LICENSE_ok_zoomer.md" }
+	}
+}
+
+tasks.withType(JavaCompile).configureEach {
+	it.options.release.set(21)
+}
+
+tasks.withType(GenerateModuleMetadata).configureEach {
+	it.enabled = false
+}

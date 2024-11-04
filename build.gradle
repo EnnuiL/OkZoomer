@@ -7,3 +7,7 @@ plugins {
 tasks.named('jar').configure {
 	it.enabled = false
 }
+
+tasks.named('sourcesJar').configure {
+	it.enabled = false
+}

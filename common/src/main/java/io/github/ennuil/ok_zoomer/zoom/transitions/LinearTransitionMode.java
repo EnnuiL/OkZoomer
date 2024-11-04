@@ -24,7 +24,7 @@ public class LinearTransitionMode implements TransitionMode {
 
 	@Override
 	public boolean getActive() {
-		return this.active || this.internalMultiplier != 1.0F || this.internalFade != 1.0F;
+		return this.active || this.internalMultiplier != 1.0F || this.internalFade != 0.0F;
 	}
 
 	@Override

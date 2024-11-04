@@ -56,6 +56,13 @@ tasks.withType(ProcessResources).matching(notNorgeTask).configureEach {
 
 tasks.jar.getDestinationDirectory().set(layout.buildDirectory.dir('libs'))
 
+// This will likely explode somehow..
+tasks.named('sourcesJar').configure {
+	it.duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+	from(zipTree(project(':common').tasks.named('sourcesJar').get().archiveFile))
+}
+
 neoForge {
 	version = libs.versions.neoforge
 

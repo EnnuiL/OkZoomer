@@ -6,7 +6,19 @@ String createVersionString() {
 version = createVersionString()
 group = 'io.github.ennuil.ok_zoomer'
 
+java {
+	withSourcesJar()
+}
+
 tasks.named('jar').configure {
+	inputs.files('LICENSE.md')
+
+	it.from(rootDir.toPath().resolve('LICENSE.md')) {
+		it.rename { "LICENSE_ok_zoomer.md" }
+	}
+}
+
+tasks.named('sourcesJar').configure {
 	inputs.files('LICENSE.md')
 
 	it.from(rootDir.toPath().resolve('LICENSE.md')) {

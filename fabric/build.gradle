@@ -97,4 +97,10 @@ tasks.named('jar').configure {
 	from(zipTree(project(':common').tasks.named('jar').get().archiveFile))
 }
 
+tasks.named('sourcesJar').configure {
+	it.duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+	from(zipTree(project(':common').tasks.named('sourcesJar').get().archiveFile))
+}
+
 remapJar.getDestinationDirectory().set(layout.buildDirectory.dir('libs'))

@@ -34,7 +34,7 @@ jobs:
       - name: Detonate JARs (Fabric)
         run: python ./ci/hissboom.py "fabric/build/libs/*.jar"
       - name: Detonate JARs (Neo)
-        run: python ./ci/hissboom.py "neo/build/libs/*.jar"
+        run: python ./ci/hissboom.py "norge/build/libs/*.jar"
       - name: Publish (GitHub Releases)
         id: publish_github
         uses: Kir-Antipov/mc-publish@995edadc13559a8b28d0b7e6571229f067ec7659 # (new) v3.3.0

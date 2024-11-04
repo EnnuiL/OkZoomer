@@ -5,7 +5,6 @@ import net.minecraft.util.Mth;
 public class SmoothTransitionMode implements TransitionMode {
 	private boolean active;
 	private final float smoothMultiplier;
-	private float fovMultiplier;
 	private float internalMultiplier;
 	private float lastInternalMultiplier;
 	private float internalFade;
@@ -26,13 +25,12 @@ public class SmoothTransitionMode implements TransitionMode {
 
 	@Override
 	public boolean getActive() {
-		return this.active;
+		return this.active || this.internalMultiplier != 1.0F || this.internalFade != 1.0F;
 	}
 
 	@Override
 	public float applyZoom(float fov, float tickDelta) {
-		fovMultiplier = Mth.lerp(tickDelta, this.lastInternalMultiplier, this.internalMultiplier);
-		return fov * fovMultiplier;
+		return fov * Mth.lerp(tickDelta, this.lastInternalMultiplier, this.internalMultiplier);
 	}
 
 	@Override
@@ -42,18 +40,16 @@ public class SmoothTransitionMode implements TransitionMode {
 
 	@Override
 	public void tick(boolean active, double divisor) {
-		double zoomMultiplier = 1.0 / divisor;
-		double fadeMultiplier = active ? 1.0 : 0.0;
+		float zoomMultiplier = (float) (1.0 / divisor);
+		float fadeMultiplier = active ? 1.0F : 0.0F;
 
 		this.lastInternalMultiplier = this.internalMultiplier;
 		this.lastInternalFade = this.internalFade;
 
-		this.internalMultiplier += (float) ((zoomMultiplier - this.internalMultiplier) * this.smoothMultiplier);
-		this.internalFade += (float) ((fadeMultiplier - this.internalFade) * this.smoothMultiplier);
+		this.internalMultiplier += (zoomMultiplier - this.internalMultiplier) * this.smoothMultiplier;
+		this.internalFade += (fadeMultiplier - this.internalFade) * this.smoothMultiplier;
 
-		if (active || fovMultiplier == this.internalMultiplier) {
-			this.active = active;
-		}
+		this.active = active;
 	}
 
 	@Override

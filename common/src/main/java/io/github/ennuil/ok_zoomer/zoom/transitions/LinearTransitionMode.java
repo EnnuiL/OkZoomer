@@ -39,15 +39,15 @@ public class LinearTransitionMode implements TransitionMode {
 
 	@Override
 	public void tick(boolean active, double divisor) {
-		double zoomMultiplier = 1.0 / divisor;
-		double fadeMultiplier = active ? 1.0D : 0.0D;
+		float zoomMultiplier = (float) (1.0 / divisor);
+		float fadeMultiplier = active ? 1.0F : 0.0F;
 
 		this.lastInternalMultiplier = this.internalMultiplier;
 		this.lastInternalFade = this.internalFade;
 
 		double linearStep = Mth.clamp(zoomMultiplier, this.minimumLinearStep, this.maximumLinearStep);
-		this.internalMultiplier = Mth.approach(this.internalMultiplier, (float) zoomMultiplier, (float) linearStep);
-		this.internalFade = Mth.approach(this.internalFade, (float) fadeMultiplier, (float) linearStep);
+		this.internalMultiplier = Mth.approach(this.internalMultiplier, zoomMultiplier, (float) linearStep);
+		this.internalFade = Mth.approach(this.internalFade, fadeMultiplier, (float) linearStep);
 
 		this.active = active;
 	}

@@ -69,19 +69,21 @@ repositories {
 	// maven { url = 'https://maven.ladysnake.org/releases' }
 }
 
-tasks.named('jar').configure {
-	inputs.files('LICENSE.md')
+jar {
+	def licenseFile = rootProject.file('LICENSE.md')
+	inputs.files(licenseFile)
 
-	it.from(rootDir.toPath().resolve('LICENSE.md')) {
-		it.rename { "LICENSE_ok_zoomer.md" }
+	from(licenseFile) {
+		rename { "LICENSE_ok_zoomer.md" }
 	}
 }
 
-tasks.named('sourcesJar').configure {
-	inputs.files('LICENSE.md')
+sourcesJar {
+	def licenseFile = rootProject.file('LICENSE.md')
+	inputs.files(licenseFile)
 
-	it.from(rootDir.toPath().resolve('LICENSE.md')) {
-		it.rename { "LICENSE_ok_zoomer.md" }
+	from(licenseFile) {
+		rename { "LICENSE_ok_zoomer.md" }
 	}
 }
 

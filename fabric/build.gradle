@@ -13,11 +13,10 @@ base.archivesName = 'ok_zoomer-fabric'
 // See https://docs.gradle.org/current/userguide/platforms.html for information on how version catalogs work.
 dependencies {
 	minecraft libs.minecraft
-	mappings loom.officialMojangMappings()
-	/* mappings(loom.layered {
+	mappings(loom.layered {
 		it.officialMojangMappings()
-		it.parchment libs.parchment
-	}) */
+		it.parchment "org.parchmentmc.data:parchment-${libs.versions.parchment.minecraft.get()}:${libs.versions.parchment.mappings.get()}@zip"
+	})
 	modImplementation libs.quilt.loader
 
 	modImplementation libs.fabric.api
@@ -34,9 +33,10 @@ dependencies {
 }
 
 loom {
-	/* if (project(':common').file('src/main/resources/ok_zoomer.accesswidener').exists()) {
-		accessWidenerPath = project(':common').file('src/main/resources/ok_zoomer.accesswidener')
-	} */
+	def atFile = project(':common').file("src/main/resources/${mod_id}.accesswidener")
+	if (atFile.exists()) {
+		accessWidenerPath.set(atFile)
+	}
 
 	mixin {
 		useLegacyMixinAp = false
@@ -48,6 +48,12 @@ loom {
 			configName = 'Fabric Client'
 			ideConfigGenerated(true)
 			runDir('run')
+		}
+	}
+
+	mods {
+		"${mod_id}" {
+			sourceSet sourceSets.main
 		}
 	}
 }

@@ -21,14 +21,14 @@ Adds a highly configurable zoom key. By default, this mod provides its own take 
 [[dependencies.ok_zoomer]]
 modId = "neoforge"
 type = "required"
-versionRange = "[21.0.0-beta,)"
+versionRange = "[21.2.0-beta,)"
 ordering = "NONE"
 side = "CLIENT"
 
 [[dependencies.ok_zoomer]]
 modId = "minecraft"
 type = "required"
-versionRange = "[1.21.2,1.21.3]"
+versionRange = "[1.21.2,1.22)"
 ordering = "NONE"
 side = "CLIENT"
 

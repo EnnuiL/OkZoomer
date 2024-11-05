@@ -27,6 +27,11 @@ processResources {
 neoForge {
 	version = libs.versions.neoforge
 
+	parchment {
+		minecraftVersion.set(libs.versions.parchment.minecraft.get())
+		mappingsVersion.set(libs.versions.parchment.mappings.get())
+	}
+
 	runs {
 		client {
 			client()
@@ -34,7 +39,7 @@ neoForge {
 	}
 
 	mods {
-		'ok_zoomer' {
+		"${mod_id}" {
 			sourceSet(sourceSets.main)
 		}
 	}

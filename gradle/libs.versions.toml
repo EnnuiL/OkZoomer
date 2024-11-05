@@ -5,7 +5,7 @@ minecraft = "1.21.3"
 parchment_minecraft = "1.21"
 parchment_mappings = "2024.07.28"
 
-quilt_loom = "1.8.4"
+quilt_loom = "1.8.5"
 quilt_loader = "0.27.0-beta.1"
 moddevgradle = "2.0.42-beta"
 neoforge = "21.3.10-beta"

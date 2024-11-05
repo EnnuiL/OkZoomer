@@ -13,7 +13,7 @@
 		"issues": "https://github.com/Up-Mods/OkZoomer/issues",
 		"sources": "https://github.com/Up-Mods/OkZoomer"
 	},
-	"icon": "icon.png",
+	"icon": "assets/ok_zoomer/icon.png",
 	"environment": "client",
 	"entrypoints": {
 		"client": ["io.github.ennuil.ok_zoomer.OkZoomerClientMod"],

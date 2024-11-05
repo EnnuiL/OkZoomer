@@ -50,17 +50,6 @@ repositories {
 			includeGroup("maven.modrinth")
 		}
 	}
-	exclusiveContent {
-		forRepository {
-			maven {
-				name = "Cursemaven"
-				url = "https://www.cursemaven.com"
-			}
-		}
-		filter {
-			includeGroup("curse.maven")
-		}
-	}
 	maven {
 		name = 'Quilt'
 		url = 'https://maven.quiltmc.org/repository/release'

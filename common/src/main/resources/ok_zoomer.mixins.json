@@ -9,8 +9,7 @@
 		"common.EditBoxMixin",
 		"common.GameRendererMixin",
 		"common.GuiMixin",
-		"common.MouseHandlerMixin",
-		"common.RenderStateShardMixin"
+		"common.MouseHandlerMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

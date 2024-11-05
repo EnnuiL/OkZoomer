@@ -5,6 +5,7 @@ plugins {
 
 repositories {
 	maven { url = 'https://maven.terraformersmc.com/releases' }
+	maven { url = 'https://maven.ladysnake.org/releases' }
 }
 
 base.archivesName = 'ok_zoomer-fabric'
@@ -26,8 +27,8 @@ dependencies {
 
 	modCompileOnly libs.wrench.wrapper
 
-	//modCompileOnly libs.bundles.trinkets
-	//modLocalRuntime libs.bundles.trinkets
+	modCompileOnly libs.bundles.trinkets
+	modLocalRuntime libs.bundles.trinkets
 
 	include libs.wrench.wrapper
 }

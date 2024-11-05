@@ -12,7 +12,9 @@ public class WrenchWrapper {
 			if (WrenchWrapper.getClass("org.quiltmc.loader.api.QuiltLoader") != null) {
 				var clazz = WrenchWrapper.getClass("io.github.ennuil.ok_zoomer.wrench_wrapper.quilt.QuiltWrapper");
 				return (C) clazz.getMethod("create", String.class, String.class, Class.class).invoke(null, family, id, configCreatorClass);
-			} else if (WrenchWrapper.getClass("net.fabricmc.loader.FabricLoader") != null) {
+			} else if (WrenchWrapper.getClass("net.fabricmc.loader.FabricLoader") != null
+					&& WrenchWrapper.getClass("net.neoforged.neoforge.common.NeoForge") == null) {
+				// The above check immunizes Wrench Wrapper's wrapper against Sinytra Connector
 				var clazz = WrenchWrapper.getClass("io.github.ennuil.ok_zoomer.wrench_wrapper.fabric.FabricWrapper");
 				return (C) clazz.getMethod("create", String.class, String.class, Class.class).invoke(null, family, id, configCreatorClass);
 			} else if (WrenchWrapper.getClass("net.neoforged.neoforge.common.NeoForge") != null) {

@@ -7,6 +7,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
+import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.ok_zoomer.zoom.Zoom;
 import net.minecraft.client.DeltaTracker;
@@ -89,7 +90,14 @@ public abstract class GuiMixin {
 		boolean persistentInterface = OkZoomerConfigManager.CONFIG.features.persistentInterface.value();
 		boolean hideCrosshair = OkZoomerConfigManager.CONFIG.tweaks.hideCrosshair.value();
 		if (persistentInterface || hideCrosshair || !Zoom.isTransitionActive()) {
+			if (hideCrosshair) {
+				float fade = 1.0F - Zoom.getTransitionMode().getFade(deltaTracker.getGameTimeDeltaPartialTick(true));
+				RenderSystem.setShaderColor(fade, fade, fade, fade);
+			}
 			original.call(graphics, deltaTracker);
+			if (hideCrosshair) {
+				RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+			}
 		} else {
 			// TODO - This has been recycled once, this should become a method
 			var lastPose = graphics.pose().last().pose();

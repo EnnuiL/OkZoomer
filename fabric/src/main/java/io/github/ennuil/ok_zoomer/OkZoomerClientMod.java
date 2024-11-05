@@ -1,5 +1,6 @@
 package io.github.ennuil.ok_zoomer;
 
+import io.github.ennuil.ok_zoomer.compat.TrinketsCompat;
 import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.ok_zoomer.events.*;
 import io.github.ennuil.ok_zoomer.key_binds.ZoomKeyBinds;
@@ -9,6 +10,7 @@ import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallba
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.loader.api.FabricLoader;
 
 // This class is responsible for registering the commands and packets
 public class OkZoomerClientMod implements ClientModInitializer {
@@ -34,11 +36,9 @@ public class OkZoomerClientMod implements ClientModInitializer {
 
 		FabricZoomUtils.addInitialPredicates();
 
-		/*
-		// mod compat
+		// Mod compat
 		if (FabricLoader.getInstance().isModLoaded("trinkets")) {
 			TrinketsCompat.init();
 		}
-		*/
 	}
 }

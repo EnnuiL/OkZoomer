@@ -46,11 +46,11 @@ public abstract class GameRendererMixin {
 	}
 
 	@ModifyReturnValue(method = "getFov", at = @At(value = "RETURN", ordinal = 1))
-	private float modifyFov(float original, @Local(argsOnly = true) float partialTicks) {
+	private double modifyFov(double original, @Local(argsOnly = true) float partialTicks) {
 		if (!Zoom.isTransitionActive()) {
 			return original;
 		} else {
-			return Zoom.getTransitionMode().applyZoom(original, partialTicks);
+			return Zoom.getTransitionMode().applyZoom((float) original, partialTicks);
 		}
 	}
 

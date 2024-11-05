@@ -1,0 +1,45 @@
+plugins {
+	id 'mod_conventions_common'
+}
+
+configurations {
+	common
+
+	commonResources
+
+	commonSources
+
+	implementation {
+		extendsFrom(common)
+	}
+}
+
+dependencies {
+	common(project(":common")) { transitive = false }
+	commonSources(project(path: ":common", configuration: "sourcesElements")) { transitive = false }
+	commonResources(project(":common")) {
+		attributes {
+			attribute(LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE, objects.named(LibraryElements, LibraryElements.RESOURCES))
+		}
+	}
+}
+
+jar {
+	from {
+		configurations.common.collect { zipTree(it) }
+	}
+	duplicatesStrategy DuplicatesStrategy.EXCLUDE
+	dependsOn configurations.common
+}
+
+sourcesJar {
+	from {
+		configurations.commonSources.collect { zipTree(it) }
+	}
+	duplicatesStrategy DuplicatesStrategy.EXCLUDE
+	dependsOn configurations.commonSources
+}
+
+processResources {
+	from(configurations.commonResources)
+}

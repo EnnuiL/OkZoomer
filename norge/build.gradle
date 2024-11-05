@@ -1,20 +1,15 @@
 plugins {
-	id 'java'
-	id 'maven-publish'
-	id 'mod_conventions'
+	id 'mod_conventions_loader'
 	alias libs.plugins.moddevgradle
 }
 
 base.archivesName = 'ok_zoomer-neo'
 
-sourceSets {}
-
 repositories {
-	maven { url = 'https://maven.neoforged.net/releases/' }
-	maven { url = 'https://maven.uuid.gg/releases' } // Up's Mods
+	maven { url = 'https://maven.neoforged.net/releases' }
 }
 
-tasks.named('processResources').configure {
+processResources {
 	it.filteringCharset 'UTF-8'
 
 	def expandProps = [
@@ -27,40 +22,6 @@ tasks.named('processResources').configure {
 	it.filesMatching('META-INF/neoforge.mods.toml') {
 		it.expand expandProps
 	}
-}
-
-tasks.named('jar').configure {
-	it.filteringCharset 'UTF-8'
-
-	it.filesMatching('META-INF/neoforge.mods.toml') {
-		it.expand 'version': project.version
-	}
-}
-
-// IMS is funny
-Closure<Boolean> notNorgeTask = {
-	Task it -> !it.name.startsWith('neo') && !it.name.startsWith('norge') && !it.name.startsWith('compileService')
-}
-
-tasks.withType(JavaCompile).matching(notNorgeTask).configureEach {
-	it.source(project(':common').sourceSets.main.allSource)
-}
-
-tasks.withType(Javadoc).matching(notNorgeTask).configureEach {
-	it.source(project(':common').sourceSets.main.allJava)
-}
-
-tasks.withType(ProcessResources).matching(notNorgeTask).configureEach {
-	it.from project(':common').sourceSets.main.resources
-}
-
-tasks.jar.getDestinationDirectory().set(layout.buildDirectory.dir('libs'))
-
-// This will likely explode somehow..
-tasks.named('sourcesJar').configure {
-	it.duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-
-	from(zipTree(project(':common').tasks.named('sourcesJar').get().archiveFile))
 }
 
 neoForge {
@@ -79,10 +40,6 @@ neoForge {
 	}
 }
 
-tasks.named('compileTestJava').configure {
-	it.enabled = false
-}
-
 configurations {
 	'implementation' {
 		exclude group: 'org.quiltmc', module: 'quilt-loader'
@@ -90,8 +47,6 @@ configurations {
 }
 
 dependencies {
-	compileOnly project(':common').sourceSets.main.output
 	implementation libs.wrench.wrapper
-
 	jarJar libs.wrench.wrapper
 }

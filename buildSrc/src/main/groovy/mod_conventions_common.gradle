@@ -1,0 +1,114 @@
+plugins {
+	id 'java-library'
+	id 'maven-publish'
+}
+
+def javaVersion = 21
+
+static String createVersionString() {
+	def ENV = System.getenv()
+	return ENV.TAG ?: "0.0.0-development${(!ENV.TAG && ENV.BUILD_NUMBER) ? "-build.${ENV.BUILD_NUMBER}" : ''}"
+}
+
+version = createVersionString()
+group = 'io.github.ennuil.ok_zoomer'
+
+java {
+	withSourcesJar()
+	if(JavaVersion.current() < JavaVersion.toVersion(javaVersion)) {
+		toolchain {
+			languageVersion.set(JavaLanguageVersion.of(javaVersion))
+		}
+	}
+	else {
+		sourceCompatibility = JavaVersion.toVersion(javaVersion)
+		targetCompatibility = JavaVersion.toVersion(javaVersion)
+	}
+}
+
+repositories {
+	mavenCentral()
+	exclusiveContent {
+		forRepository {
+			maven {
+				name = "ParchmentMC"
+				url = "https://maven.parchmentmc.org"
+			}
+		}
+		filter {
+			includeGroupAndSubgroups("org.parchmentmc")
+		}
+	}
+	exclusiveContent {
+		forRepository {
+			maven {
+				name = "Modrinth"
+				url = "https://api.modrinth.com/maven"
+			}
+		}
+		filter {
+			includeGroup("maven.modrinth")
+		}
+	}
+	exclusiveContent {
+		forRepository {
+			maven {
+				name = "Cursemaven"
+				url = "https://www.cursemaven.com"
+			}
+		}
+		filter {
+			includeGroup("curse.maven")
+		}
+	}
+	maven {
+		name = 'Quilt'
+		url = 'https://maven.quiltmc.org/repository/release'
+	}
+	maven { url = 'https://maven.uuid.gg/releases' } // Up's Mods
+	// maven { url = 'https://maven.ladysnake.org/releases' }
+}
+
+tasks.named('jar').configure {
+	inputs.files('LICENSE.md')
+
+	it.from(rootDir.toPath().resolve('LICENSE.md')) {
+		it.rename { "LICENSE_ok_zoomer.md" }
+	}
+}
+
+tasks.named('sourcesJar').configure {
+	inputs.files('LICENSE.md')
+
+	it.from(rootDir.toPath().resolve('LICENSE.md')) {
+		it.rename { "LICENSE_ok_zoomer.md" }
+	}
+}
+
+tasks.withType(JavaCompile).configureEach {
+	it.options.release.set(javaVersion)
+}
+
+publishing {
+	def ENV = System.getenv()
+	afterEvaluate {
+		publications {
+			"mavenJava${project.name}"(MavenPublication) {
+				artifactId base.archivesName.get()
+				from components.java
+			}
+		}
+	}
+
+	repositories {
+		if (ENV.MAVEN_UPLOAD_URL) {
+			maven {
+				url = ENV.MAVEN_UPLOAD_URL
+				credentials {
+					username = ENV.MAVEN_UPLOAD_USERNAME
+					password = ENV.MAVEN_UPLOAD_PASSWORD
+				}
+			}
+		}
+	}
+}

@@ -1,9 +1,8 @@
 package io.github.ennuil.ok_zoomer.events;
 
-import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import io.github.ennuil.ok_zoomer.config.screen.OkZoomerConfigScreen;
 import net.minecraft.client.Minecraft;
-import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -21,9 +20,9 @@ public class RegisterGameEvents {
 	@SubscribeEvent
 	public static void registerCommands(RegisterClientCommandsEvent event) {
 		event.getDispatcher().register(
-			LiteralArgumentBuilder.<CommandSourceStack>literal("ok_zoomer").executes(ctx -> {
-				Minecraft.getInstance().setScreen(new OkZoomerConfigScreen(Minecraft.getInstance().screen));
-				return 1;
+			Commands.literal("ok_zoomer").executes(ctx -> {
+				Minecraft.getInstance().setScreen(new OkZoomerConfigScreen(null));
+				return 0;
 			})
 		);
 	}

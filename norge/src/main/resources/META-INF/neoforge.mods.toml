@@ -32,6 +32,14 @@ versionRange = "[1.21.2,1.22)"
 ordering = "NONE"
 side = "CLIENT"
 
+[[dependencies.ok_zoomer]]
+modId = "okzoomer"
+type = "incompatible"
+reason = "The mod \"okzoomer-neoforge\", a now-redundant port of Ok Zoomer, causes interference with the official Ok Zoomer's zoom. This causes issues on the proper functioning of the zoom when both are used. Please remove one of the zoom mod JARs to proceed."
+versionRange = "*"
+ordering = "NONE"
+side = "BOTH"
+
 [mc-publish]
 modrinth = "${modrinth_id}"
 curseforge = "${curseforge_id}"

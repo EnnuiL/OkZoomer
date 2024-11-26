@@ -1,6 +1,6 @@
 plugins {
 	id 'mod_conventions_common'
-	alias libs.plugins.quilt.loom
+	alias libs.plugins.fabric.loom
 }
 
 base.archivesName = 'ok_zoomer-common'
@@ -9,12 +9,12 @@ base.archivesName = 'ok_zoomer-common'
 // See https://docs.gradle.org/current/userguide/platforms.html for information on how version catalogs work.
 dependencies {
 	minecraft libs.minecraft
-	mappings loom.officialMojangMappings()
-	/* mappings(loom.layered {
+	//mappings loom.officialMojangMappings()
+	mappings(loom.layered {
 		it.officialMojangMappings()
 		it.parchment libs.parchment
-	}) */
-	modImplementation libs.quilt.loader
+	})/home/ennui/Documents/Quilt/1.21.4/OkZoomer/fabric/build/libs/ok_zoomer-fabric-0.0.0-development.jar
+	modImplementation libs.fabric.loader
 
 	modCompileOnly libs.wrench.wrapper
 }

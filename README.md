@@ -1,12 +1,16 @@
-<img src="common/src/main/resources/assets/ok_zoomer/icon.png" align="right" width="128px" alt="Ok Zoomer icon"/>
-
 # Ok Zoomer
 
-Ok Zoomer is a mod that adds a highly configurable zoom key packed with tons of features!
+![Banner for the Ok Zoomer mod](https://mod-assets.upcraft.dev/promo/ok-zoomer/modpage_banner.png)
 
-By default, a unique take on zooming is provided, however, by configuring this mod through Mod Menu or a file, the zoom can be adapted for your own purposes! Here's an example: want a cinematic camera while zooming? Enable it! Want to have a better control over it? Toggle it to the Multiplied mode and adjust the multiplier! Do you hate it but still want some grip on the zoom? Enable "Reduce Sensitivity"! On this mod, you are in charge of the zoom!
+![A Minecraft landscape with cows and pigs being zoomed using Ok Zoomer's zoom, configured at the default Camera preset.](https://mod-assets.upcraft.dev/promo/ok-zoomer/showcase_camera.avif)
 
-For more information, see the [Modrinth](https://modrinth.com/mod/ok-zoomer) or [CurseForge](https://www.curseforge.com/minecraft/mc-mods/ok-zoomer) pages.
+What you are seeing here is the best zoom mod around here. It is faster than those who claim to be simple, it is lighter than bloated competitors with megabytes of dependencies, it is powerful with its configurability and its many presets, and most importantly, it is never afraid to innovate, having popularized zoom transitions on its release and always introducing new features.
+
+The zoom key is bound to <kbd>C</kbd> by default, with the zoom itself prioritizing a smooth transition between the user's interface and a clean view, which is perfect for screenshots! But if you want something else? We have options!
+
+By going to Mod Menu or by using the `/ok_zoomer` command, you can choose other presets such as "Competitive" (prioritizes your interface), "Classic" (emulates OptiFine's zoom), Spyglass, and others! You can also tweak other options such as Zoom Transition, Cinematic Camera, Zoom Divisor, and much more!
+
+You can see more information on the options on the [wiki](https://github.com/Up-Mods/OkZoomer/wiki/Configuration).
 
 ## Download
 

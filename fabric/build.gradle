@@ -1,6 +1,6 @@
 plugins {
 	id 'mod_conventions_loader'
-	alias libs.plugins.quilt.loom
+	alias libs.plugins.fabric.loom
 }
 
 repositories {
@@ -17,14 +17,14 @@ dependencies {
 		it.officialMojangMappings()
 		it.parchment libs.parchment
 	})
-	modImplementation libs.quilt.loader
+	modImplementation libs.fabric.loader
 
 	modImplementation libs.fabric.api
 
 	modCompileOnly libs.modmenu
 	modLocalRuntime libs.modmenu
 
-	modCompileOnly libs.wrench.wrapper
+	modImplementation libs.wrench.wrapper
 
 	//modCompileOnly libs.bundles.trinkets
 	//modLocalRuntime libs.bundles.trinkets

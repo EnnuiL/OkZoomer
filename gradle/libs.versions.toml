@@ -3,13 +3,13 @@
 minecraft = "1.21.3"
 parchment = "2024.11.17"
 
-quilt_loom = "1.8.5"
-quilt_loader = "0.27.1-beta.1"
-moddevgradle = "2.0.44-beta"
-neoforge = "21.3.36-beta"
+fabric_loom = "1.8.13"
+fabric_loader = "0.16.9"
+moddevgradle = "2.0.48-beta"
+neoforge = "21.3.42-beta"
 
-fabric_api = "0.109.0+1.21.3"
-wrench_wrapper = "0.6.0"
+fabric_api = "0.110.0+1.21.3"
+wrench_wrapper = "0.6.1"
 
 modmenu = "12.0.0-beta.1"
 trinkets = "3.10.0"
@@ -17,7 +17,7 @@ cca = "6.1.1"
 
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
-quilt_loader = { module = "org.quiltmc:quilt-loader", version.ref = "quilt_loader" }
+fabric_loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabric_loader" }
 parchment = { module = "org.parchmentmc.data:parchment-1.21.1", version.ref = "parchment" }
 
 fabric_api = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric_api" }
@@ -33,5 +33,5 @@ cca_entity = { module = "org.ladysnake.cardinal-components-api:cardinal-componen
 trinkets = ["trinkets", "cca_base", "cca_entity"]
 
 [plugins]
-quilt_loom = { id = "org.quiltmc.loom", version.ref = "quilt_loom" }
+fabric_loom = { id = "fabric-loom", version.ref = "fabric_loom" }
 moddevgradle = { id = "net.neoforged.moddev", version.ref = "moddevgradle" }

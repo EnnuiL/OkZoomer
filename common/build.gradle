@@ -13,7 +13,7 @@ dependencies {
 	mappings(loom.layered {
 		it.officialMojangMappings()
 		it.parchment libs.parchment
-	})/home/ennui/Documents/Quilt/1.21.4/OkZoomer/fabric/build/libs/ok_zoomer-fabric-0.0.0-development.jar
+	})
 	modImplementation libs.fabric.loader
 
 	modCompileOnly libs.wrench.wrapper

@@ -22,7 +22,7 @@ dependencies {
 	modImplementation libs.fabric.api
 
 	modCompileOnly libs.modmenu
-	modLocalRuntime libs.modmenu
+	//modLocalRuntime libs.modmenu
 
 	implementation libs.wrench.wrapper
 

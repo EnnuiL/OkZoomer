@@ -295,8 +295,7 @@ public class OkZoomerAbstractSelectionList extends AbstractContainerWidget {
 		this.update();
 	}
 
-	// 1.21.4-exclusive method
-	// @Override
+	@Override
 	protected int contentHeight() {
 		return this.contentHeight;
 	}
@@ -316,8 +315,7 @@ public class OkZoomerAbstractSelectionList extends AbstractContainerWidget {
 		}
 	}
 
-	// 1.21.4-exclusive method
-	//@Override
+	@Override
 	protected double scrollRate() {
 		return 10.0;
 	}

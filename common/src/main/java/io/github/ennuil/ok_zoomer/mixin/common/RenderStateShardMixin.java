@@ -31,6 +31,7 @@ public abstract class RenderStateShardMixin {
 	@Inject(
 		method = {
 			"method_62268",
+			"method_65205", // Intermediary 1.21.4
 			"lambda$static$15()V"
 		},
 		at = @At("HEAD"),

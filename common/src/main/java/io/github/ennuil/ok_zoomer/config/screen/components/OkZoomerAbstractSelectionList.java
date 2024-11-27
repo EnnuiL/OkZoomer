@@ -295,6 +295,12 @@ public class OkZoomerAbstractSelectionList extends AbstractContainerWidget {
 		this.update();
 	}
 
+	// 1.21.4-exclusive method
+	// @Override
+	protected int contentHeight() {
+		return this.contentHeight;
+	}
+
 	protected void ensureVisible(int index) {
 		int rowTop = this.getRowTop(index);
 		int rowTop2 = rowTop - this.getY() - 4 - entryHeights.getInt(index);
@@ -308,6 +314,12 @@ public class OkZoomerAbstractSelectionList extends AbstractContainerWidget {
 		if (rowTop3 < 0) {
 			this.setScrollAmount(this.getScrollAmount() - rowTop3);
 		}
+	}
+
+	// 1.21.4-exclusive method
+	//@Override
+	protected double scrollRate() {
+		return 10.0;
 	}
 
 	// This is so faithful to Vanilla's algo that it also inherits the Bottom Void Pixel of Doom! Oh no!

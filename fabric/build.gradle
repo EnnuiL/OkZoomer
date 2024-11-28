@@ -24,7 +24,7 @@ dependencies {
 	modCompileOnly libs.modmenu
 	modLocalRuntime libs.modmenu
 
-	modImplementation libs.wrench.wrapper
+	implementation libs.wrench.wrapper
 
 	//modCompileOnly libs.bundles.trinkets
 	//modLocalRuntime libs.bundles.trinkets

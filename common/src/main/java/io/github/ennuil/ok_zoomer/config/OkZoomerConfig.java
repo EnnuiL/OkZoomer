@@ -152,6 +152,10 @@ public class OkZoomerConfig extends ReflectiveConfig {
 		public final TrackedValue<Boolean> resetZoomWithMouse = this.value(true);
 
 		@WidgetSize(Size.HALF)
+		@Comment("Improves performance by having the game render less of the world when not necessary while zoomed in. Disable this feature if you notice glitches on zooming out and if the game cannot be optimized any further.")
+		public final TrackedValue<Boolean> zoomAwareOcclusion = this.value(true);
+
+		@WidgetSize(Size.HALF)
 		@Comment("If enabled, the current zoom divisor is forgotten once zooming is finished.")
 		public final TrackedValue<Boolean> forgetZoomDivisor = this.value(true);
 

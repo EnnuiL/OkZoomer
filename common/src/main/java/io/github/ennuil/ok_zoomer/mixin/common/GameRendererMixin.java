@@ -38,7 +38,7 @@ public abstract class GameRendererMixin {
 		)
 	)
 	private int modifyCulling(int original) {
-		if (!Zoom.isZooming()) {
+		if (!Zoom.isZooming() || !OkZoomerConfigManager.CONFIG.tweaks.zoomAwareOcclusion.value()) {
 			return original;
 		} else {
 			return Mth.positiveCeilDiv(original, Mth.floor(Zoom.getZoomDivisor()));

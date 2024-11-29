@@ -75,6 +75,8 @@
 	"config.ok_zoomer.tweaks.hide_crosshair.tooltip": "Hides the crosshair while zooming.",
 	"config.ok_zoomer.tweaks.reset_zoom_with_mouse": "Reset Zoom with Mouse",
 	"config.ok_zoomer.tweaks.reset_zoom_with_mouse.tooltip": "Allows for resetting the zoom with the middle mouse button.",
+	"config.ok_zoomer.tweaks.zoom_aware_occlusion": "Zoom-Aware Occlusion",
+	"config.ok_zoomer.tweaks.zoom_aware_occlusion.tooltip": "Improves performance by having the game render less of the world when not necessary while zoomed in. Disable this feature if you notice glitches on zooming out and if the game cannot be optimized any further.",
 	"config.ok_zoomer.tweaks.forget_zoom_divisor": "Forget Zoom Divisor",
 	"config.ok_zoomer.tweaks.forget_zoom_divisor.tooltip": "If enabled, the current zoom divisor is forgotten once zooming is finished.",
 	"config.ok_zoomer.tweaks.use_spyglass_sounds": "Use Spyglass Sounds",

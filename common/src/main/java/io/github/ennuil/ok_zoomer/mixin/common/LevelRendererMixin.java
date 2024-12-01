@@ -33,7 +33,7 @@ public abstract class LevelRendererMixin {
 		)
 	)
 	private void accountForZooming(Camera camera, Frustum frustum, boolean hasCapturedFrustum, boolean isSpectator, CallbackInfo ci) {
-		if (OkZoomerConfigManager.CONFIG.tweaks.zoomAwareOcclusion.value()) {
+		if (OkZoomerConfigManager.CONFIG.tweaks.smartOcclusion.value()) {
 			int divisor = Zoom.isZooming() ? Mth.floor(Zoom.getZoomDivisor()) : 1;
 
 			if (divisor != this.prevZoomDivisor) {

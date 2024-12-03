@@ -77,7 +77,7 @@
 	"config.ok_zoomer.tweaks.reset_zoom_with_mouse": "Reiniciar zoom com mouse",
 	"config.ok_zoomer.tweaks.reset_zoom_with_mouse.tooltip": "Permite reiniciar o zoom com o botão do meio do mouse.",
 	"config.ok_zoomer.tweaks.smart_occlusion": "Oclusão inteligente",
-	"config.ok_zoomer.tweaks.smart_occlusion.tooltip": "Melhora o desempenho ao fazer o jogo renderizar menos do mundo durante o zoom. Isto pode causar flashes ao sair do zoom caso o mod Sodium não esteja instalado.",
+	"config.ok_zoomer.tweaks.smart_occlusion.tooltip": "Melhora o desempenho ao fazer o jogo renderizar menos do mundo durante o zoom. Isto pode causar piscares ao sair do zoom caso o mod Sodium não esteja instalado.",
 	"config.ok_zoomer.tweaks.forget_zoom_divisor": "Esquecer divisor de zoom",
 	"config.ok_zoomer.tweaks.forget_zoom_divisor.tooltip": "Se ativado, o divisor de zoom atual será esquecido quando o zoom terminar.",
 	"config.ok_zoomer.tweaks.use_spyglass_sounds": "Usar sons da luneta",

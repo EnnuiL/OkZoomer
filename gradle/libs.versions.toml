@@ -1,11 +1,11 @@
 [versions]
-minecraft = "1.21.4-rc3"
+minecraft = "1.21.4"
 parchment = "2024.11.17"
 
 fabric_loom = "1.9.2"
 fabric_loader = "0.16.9"
 moddevgradle = "2.0.52-beta"
-neoforge = "21.3.56"
+neoforge = "21.4.0-beta"
 
 fabric_api = "0.110.5+1.21.4"
 wrench_wrapper = "0.6.1"

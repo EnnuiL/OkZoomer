@@ -13,11 +13,12 @@ public class OkZoomerConfig extends ReflectiveConfig {
 	@Comment("Allows for configuring the main zoom features.")
 	public final FeaturesConfig features = new FeaturesConfig();
 
-	@Alias("values")
 	@Comment("Allows for precise tweaking of the zoom.")
 	public final ZoomValuesConfig zoomValues = new ZoomValuesConfig();
 
-	@Alias("values")
+	@Comment("Allows to configure the \"Legacy\" scrolling mode.")
+	public final LegacyScrollValuesConfig legacyScrollValues = new LegacyScrollValuesConfig();
+
 	@Comment("Allows for precise tweaking of zoom transitions.")
 	public final TransitionValuesConfig transitionValues = new TransitionValuesConfig();
 
@@ -62,6 +63,13 @@ public class OkZoomerConfig extends ReflectiveConfig {
 		public final TrackedValue<Boolean> zoomScrolling = this.value(true);
 
 		@WidgetSize(Size.HALF)
+		@Comment("""
+			"EXPONENTIAL": The zoom will scroll in an exponential way, making zoom steps consistent. This may be harder to configure currently.
+			"LEGACY": The zoom will scroll in an arbitrary way. This may be easier to configure currently, but scrolling may feel harder on higher zoom levels.
+			""")
+		public final TrackedValue<ScrollingModes> scrollingMode = this.value(ScrollingModes.EXPONENTIAL);
+
+		@WidgetSize(Size.HALF)
 		@Comment("Retains the interface when zooming.")
 		public final TrackedValue<Boolean> persistentInterface = this.value(false);
 
@@ -85,10 +93,37 @@ public class OkZoomerConfig extends ReflectiveConfig {
 			"REPLACE_ZOOM": Zooming will replace the spyglass zoom but it won't require one in order to work.
 			"BOTH": Zooming will act as a complete replacement of the spyglass zoom, requiring one to work and replacing its zoom as well.
 			""")
-		public final TrackedValue<SpyglassMode> spyglassMode = this.value(SpyglassMode.OFF);
+		public final TrackedValue<SpyglassModes> spyglassMode = this.value(SpyglassModes.OFF);
 	}
 
 	public static class ZoomValuesConfig extends Section  {
+		@WidgetSize(Size.HALF)
+		@Comment("Determines the number to be used on the exponential curve. If unsure, keep this value at 2.")
+		@IntegerRange(min = 2, max = Integer.MAX_VALUE)
+		public final TrackedValue<Integer> scrollBase = this.value(2);
+
+		@WidgetSize(Size.HALF)
+		@Comment("Determines the resolution of zoom scrolling. This will effectively multiply the amount of scroll steps.")
+		@IntegerRange(min = 1, max = Integer.MAX_VALUE)
+		public final TrackedValue<Integer> scrollResolution = this.value(5);
+
+		@WidgetSize(Size.HALF)
+		@Comment("The default scroll step to use on zooming in.")
+		@IntegerRange(min = 0, max = Integer.MAX_VALUE)
+		public final TrackedValue<Integer> defaultScrollStep = this.value(10);
+
+		@WidgetSize(Size.HALF)
+		@Comment("The maximum amount of scroll steps that the zoom may reach.")
+		@IntegerRange(min = 0, max = Integer.MAX_VALUE)
+		public final TrackedValue<Integer> scrollStepLimit = this.value(30);
+
+		@WidgetSize(Size.HALF)
+		@Comment("The multiplier used by the multiplied cinematic camera.")
+		@FloatRange(min = Double.MIN_NORMAL, max = 32.0)
+		public final TrackedValue<Double> cinematicMultiplier = this.value(4.0);
+	}
+
+	public static class LegacyScrollValuesConfig extends Section {
 		@WidgetSize(Size.HALF)
 		@Comment("The divisor used to apply zoom to the FOV. A higher value means more zoom.")
 		@FloatRange(min = Double.MIN_NORMAL, max = Double.MAX_VALUE)
@@ -113,11 +148,6 @@ public class OkZoomerConfig extends ReflectiveConfig {
 		@Comment("The number of steps between the zoom divisor and the maximum zoom divisor. Used by zoom scrolling.")
 		@IntegerRange(min = 0, max = Integer.MAX_VALUE)
 		public final TrackedValue<Integer> upperScrollSteps = this.value(10);
-
-		@WidgetSize(Size.HALF)
-		@Comment("The multiplier used for the multiplied cinematic camera.")
-		@FloatRange(min = Double.MIN_NORMAL, max = 32.0)
-		public final TrackedValue<Double> cinematicMultiplier = this.value(4.0);
 	}
 
 	public static class TransitionValuesConfig extends Section  {
@@ -128,14 +158,9 @@ public class OkZoomerConfig extends ReflectiveConfig {
 		public final TrackedValue<Double> smoothTransitionFactor = this.value(0.6);
 
 		@WidgetSize(Size.HALF)
-		@Comment("The minimum value which the linear zoom transition step can reach.")
+		@Comment("The value which the linear zoom transition step can reach.")
 		@FloatRange(min = 0.0, max = Double.MAX_VALUE)
-		public final TrackedValue<Double> minimumLinearStep = this.value(0.16);
-
-		@WidgetSize(Size.HALF)
-		@Comment("The maximum value which the linear zoom transition step can reach.")
-		@FloatRange(min = 0.0, max = Double.MAX_VALUE)
-		public final TrackedValue<Double> maximumLinearStep = this.value(0.22);
+		public final TrackedValue<Double> linearStep = this.value(0.2);
 	}
 
 	public static class TweaksConfig extends Section  {
@@ -152,8 +177,12 @@ public class OkZoomerConfig extends ReflectiveConfig {
 		public final TrackedValue<Boolean> resetZoomWithMouse = this.value(true);
 
 		@WidgetSize(Size.HALF)
-		@Comment("Improves performance by making the game render less of the world while zoomed in. This feature requires the Sodium mod in order to work.")
+		@Comment("Improves performance by making the game render less of the world while zoomed in. This feature depends on the Sodium mod in order to work.")
 		public final TrackedValue<Boolean> smartOcclusion = this.value(true);
+
+		@WidgetSize(Size.HALF)
+		@Comment("Expands the entity distance while zooming in, allowing creatures and certain blocks to be seen from afar. This may have a performance impact during zoom.")
+		public final TrackedValue<SeeDistantEntitiesModes> seeDistantEntities = this.value(SeeDistantEntitiesModes.SAFE);
 
 		@WidgetSize(Size.HALF)
 		@Comment("If enabled, the current zoom divisor is forgotten once zooming is finished.")
@@ -162,6 +191,10 @@ public class OkZoomerConfig extends ReflectiveConfig {
 		@WidgetSize(Size.HALF)
 		@Comment("If enabled, the zoom will use spyglass sounds on zooming in and out.")
 		public final TrackedValue<Boolean> useSpyglassSounds = this.value(false);
+
+		@WidgetSize(Size.HALF)
+		@Comment("Displays debug information for exponential zoom scrolling. Currently it may help with configuring the zoom scrolling.")
+		public final TrackedValue<Boolean> debugScrolling = this.value(false);
 
 		// TODO - Disable it upon stable release!
 		@WidgetSize(Size.HALF)

@@ -19,17 +19,28 @@ public class ConfigEnums {
 		PERSISTENT
 	}
 
+	public enum ScrollingModes implements ConfigEnum {
+		EXPONENTIAL,
+		LEGACY
+	}
+
 	public enum ZoomOverlays implements ConfigEnum {
 		OFF,
 		VIGNETTE,
 		SPYGLASS
 	}
 
-	public enum SpyglassMode implements ConfigEnum {
+	public enum SpyglassModes implements ConfigEnum {
 		OFF,
 		REQUIRE_ITEM,
 		REPLACE_ZOOM,
 		BOTH
+	}
+
+	public enum SeeDistantEntitiesModes implements ConfigEnum {
+		OFF,
+		SAFE,
+		ON
 	}
 
 	public enum ZoomPresets implements ConfigEnum {

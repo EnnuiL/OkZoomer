@@ -1,6 +1,7 @@
 package io.github.ennuil.ok_zoomer.utils;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import io.github.ennuil.ok_zoomer.config.ConfigEnums;
 import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.ok_zoomer.key_binds.ZoomKeyBinds;
 import io.github.ennuil.ok_zoomer.zoom.Zoom;
@@ -10,7 +11,6 @@ import net.minecraft.client.gui.components.toasts.SystemToast;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.Item;
@@ -26,7 +26,7 @@ public class ZoomUtils {
 
 	public static final SystemToast.SystemToastId TOAST_ID = new SystemToast.SystemToastId();
 
-	public static final TagKey<Item> ZOOM_DEPENDENCIES_TAG = TagKey.create(Registries.ITEM, ZoomUtils.id("zoom_dependencies"));
+	public static final TagKey<Item> ZOOM_DEPENDENCIES_TAG = TagKey.create(Registries.ITEM, ModUtils.id("zoom_dependencies"));
 
 	public static int zoomStep = 0;
 
@@ -34,21 +34,42 @@ public class ZoomUtils {
 	private static boolean safeSmartOcclusion = false;
 
 	// The method used for changing the zoom divisor, used by zoom scrolling and the key binds
-	public static void changeZoomDivisor(Minecraft minecraft, boolean increase) {
-		double zoomDivisor = OkZoomerConfigManager.CONFIG.zoomValues.zoomDivisor.value();
-		double minimumZoomDivisor = OkZoomerConfigManager.CONFIG.zoomValues.minimumZoomDivisor.value();
-		double maximumZoomDivisor = OkZoomerConfigManager.CONFIG.zoomValues.maximumZoomDivisor.value();
-		int upperScrollStep = OkZoomerConfigManager.CONFIG.zoomValues.upperScrollSteps.value();
-		int lowerScrollStep = OkZoomerConfigManager.CONFIG.zoomValues.lowerScrollSteps.value();
+	public static void changeZoomDivisor(boolean increase) {
+		if (OkZoomerConfigManager.CONFIG.features.scrollingMode.value() == ConfigEnums.ScrollingModes.EXPONENTIAL) {
+			int scrollBase = OkZoomerConfigManager.CONFIG.zoomValues.scrollBase.value();
+			int scrollResolution = OkZoomerConfigManager.CONFIG.zoomValues.scrollResolution.value();
+			int upperScrollStep = OkZoomerConfigManager.CONFIG.zoomValues.scrollStepLimit.value();
+			int lowerScrollStep = 0;
 
-		zoomStep = increase ? Math.min(zoomStep + 1, upperScrollStep) :  Math.max(zoomStep - 1, -lowerScrollStep);
+			zoomStep = increase ? Math.min(zoomStep + 1, upperScrollStep) :  Math.max(zoomStep - 1, -lowerScrollStep);
 
-		if (zoomStep > 0) {
-			Zoom.setZoomDivisor(zoomDivisor + ((maximumZoomDivisor - zoomDivisor) / upperScrollStep * zoomStep));
-		} else if (zoomStep == 0) {
-			Zoom.setZoomDivisor(zoomDivisor);
+			double divisor = 1.0;
+			if (zoomStep != 0) {
+				divisor = Math.pow(scrollBase, (double) zoomStep / scrollResolution);
+				Zoom.setZoomDivisor(divisor);
+			} else {
+				Zoom.setZoomDivisor(1);
+			}
+
+			if (OkZoomerConfigManager.CONFIG.tweaks.debugScrolling.value()) {
+				Minecraft.getInstance().player.displayClientMessage(Component.literal( zoomStep + " - " + divisor), true);
+			}
 		} else {
-			Zoom.setZoomDivisor(zoomDivisor + ((minimumZoomDivisor - zoomDivisor) / lowerScrollStep * -zoomStep));
+			double zoomDivisor = OkZoomerConfigManager.CONFIG.legacyScrollValues.zoomDivisor.value();
+			double minimumZoomDivisor = OkZoomerConfigManager.CONFIG.legacyScrollValues.minimumZoomDivisor.value();
+			double maximumZoomDivisor = OkZoomerConfigManager.CONFIG.legacyScrollValues.maximumZoomDivisor.value();
+			int upperScrollStep = OkZoomerConfigManager.CONFIG.legacyScrollValues.upperScrollSteps.value();
+			int lowerScrollStep = OkZoomerConfigManager.CONFIG.legacyScrollValues.lowerScrollSteps.value();
+
+			zoomStep = increase ? Math.min(zoomStep + 1, upperScrollStep) :  Math.max(zoomStep - 1, -lowerScrollStep);
+
+			if (zoomStep > 0) {
+				Zoom.setZoomDivisor(zoomDivisor + ((maximumZoomDivisor - zoomDivisor) / upperScrollStep * zoomStep));
+			} else if (zoomStep == 0) {
+				Zoom.setZoomDivisor(zoomDivisor);
+			} else {
+				Zoom.setZoomDivisor(zoomDivisor + ((minimumZoomDivisor - zoomDivisor) / lowerScrollStep * -zoomStep));
+			}
 		}
 	}
 
@@ -56,13 +77,21 @@ public class ZoomUtils {
 	public static void resetZoomDivisor(boolean userPrompted) {
 		if (!userPrompted && !OkZoomerConfigManager.CONFIG.tweaks.forgetZoomDivisor.value()) return;
 
-		Zoom.resetZoomDivisor();
-		zoomStep = 0;
+		if (OkZoomerConfigManager.CONFIG.features.scrollingMode.value() == ConfigEnums.ScrollingModes.EXPONENTIAL) {
+			int scrollBase = OkZoomerConfigManager.CONFIG.zoomValues.scrollBase.value();
+			int scrollResolution = OkZoomerConfigManager.CONFIG.zoomValues.scrollResolution.value();
+			zoomStep = OkZoomerConfigManager.CONFIG.zoomValues.defaultScrollStep.value();
+			Zoom.setZoomDivisor(Math.pow(scrollBase, (double) zoomStep / scrollResolution));
+		} else {
+			zoomStep = 0;
+			Zoom.setZoomDivisor(OkZoomerConfigManager.CONFIG.legacyScrollValues.zoomDivisor.value());
+		}
 	}
 
 	public static void keepZoomStepsWithinBounds() {
-		int upperScrollStep = OkZoomerConfigManager.CONFIG.zoomValues.upperScrollSteps.value();
-		int lowerScrollStep = OkZoomerConfigManager.CONFIG.zoomValues.lowerScrollSteps.value();
+		boolean isExponential = OkZoomerConfigManager.CONFIG.features.scrollingMode.value() == ConfigEnums.ScrollingModes.EXPONENTIAL;
+		int upperScrollStep = isExponential ? OkZoomerConfigManager.CONFIG.zoomValues.scrollStepLimit.value() : OkZoomerConfigManager.CONFIG.legacyScrollValues.upperScrollSteps.value();
+		int lowerScrollStep = isExponential ? 0 : OkZoomerConfigManager.CONFIG.legacyScrollValues.lowerScrollSteps.value();
 
 		zoomStep = Mth.clamp(zoomStep, -lowerScrollStep, upperScrollStep);
 	}
@@ -93,16 +122,12 @@ public class ZoomUtils {
 		}
 	}
 
-	public static ResourceLocation id(String path) {
-		return ModUtils.id(path);
-	}
-
 	public static boolean hasSpyglass(LocalPlayer player) {
-		return hasSpyglass.test(player);
+		return ZoomUtils.hasSpyglass.test(player);
 	}
 
 	public static void addSpyglassProvider(Predicate<LocalPlayer> provider) {
-		hasSpyglass = hasSpyglass.or(provider);
+		ZoomUtils.hasSpyglass = ZoomUtils.hasSpyglass.or(provider);
 	}
 
 	public static void enableSafeSmartOcclusion() {
@@ -111,5 +136,13 @@ public class ZoomUtils {
 
 	public static boolean hasSmartOcclusion() {
 		return OkZoomerConfigManager.CONFIG.tweaks.smartOcclusion.value() && ZoomUtils.safeSmartOcclusion;
+	}
+
+	public static boolean canSeeDistantEntities() {
+		return switch (OkZoomerConfigManager.CONFIG.tweaks.seeDistantEntities.value()) {
+			case SAFE -> ZoomUtils.safeSmartOcclusion;
+			case ON -> true;
+			case OFF -> false;
+		};
 	}
 }

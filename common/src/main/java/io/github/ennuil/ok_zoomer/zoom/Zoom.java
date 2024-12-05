@@ -8,7 +8,6 @@ import io.github.ennuil.ok_zoomer.zoom.transitions.SmoothTransitionMode;
 
 public class Zoom {
 	private static boolean zooming = false;
-	private static double defaultZoomDivisor = 4.0F;
 	private static double zoomDivisor = 4.0F;
 	private static TransitionMode transitionMode = new SmoothTransitionMode();
 	private static MouseModifier mouseModifier = new ZoomDivisorMouseModifier();
@@ -22,24 +21,12 @@ public class Zoom {
 		Zoom.zoomDivisor = zoomDivisor;
 	}
 
-	public static double getDefaultZoomDivisor() {
-		return Zoom.defaultZoomDivisor;
-	}
-
-	public static void setDefaultZoomDivisor(double defaultZoomDivisor) {
-		Zoom.defaultZoomDivisor = defaultZoomDivisor;
-	}
-
 	public static boolean isZooming() {
 		return Zoom.zooming;
 	}
 
 	public static void setZooming(boolean zooming) {
 		Zoom.zooming = zooming;
-	}
-
-	public static void resetZoomDivisor() {
-		Zoom.zoomDivisor = Zoom.defaultZoomDivisor;
 	}
 
 	public static TransitionMode getTransitionMode() {

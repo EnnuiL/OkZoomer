@@ -1,18 +1,18 @@
 package io.github.ennuil.ok_zoomer.config;
 
-import io.github.ennuil.ok_zoomer.zoom.Zoom;
-import io.github.ennuil.ok_zoomer.zoom.modifiers.CinematicCameraMouseModifier;
-import io.github.ennuil.ok_zoomer.zoom.modifiers.ContainingMouseModifier;
-import io.github.ennuil.ok_zoomer.zoom.modifiers.ZoomDivisorMouseModifier;
-import io.github.ennuil.ok_zoomer.zoom.overlays.SpyglassZoomOverlay;
-import io.github.ennuil.ok_zoomer.zoom.transitions.InstantTransitionMode;
-import io.github.ennuil.ok_zoomer.zoom.transitions.SmoothTransitionMode;
 import io.github.ennuil.ok_zoomer.config.ConfigEnums.CinematicCameraOptions;
 import io.github.ennuil.ok_zoomer.utils.ModUtils;
 import io.github.ennuil.ok_zoomer.wrench_wrapper.WrenchWrapper;
-import io.github.ennuil.ok_zoomer.zoom.transitions.LinearTransitionMode;
+import io.github.ennuil.ok_zoomer.zoom.Zoom;
+import io.github.ennuil.ok_zoomer.zoom.modifiers.CinematicCameraMouseModifier;
+import io.github.ennuil.ok_zoomer.zoom.modifiers.ContainingMouseModifier;
 import io.github.ennuil.ok_zoomer.zoom.modifiers.MultipliedCinematicCameraMouseModifier;
+import io.github.ennuil.ok_zoomer.zoom.modifiers.ZoomDivisorMouseModifier;
+import io.github.ennuil.ok_zoomer.zoom.overlays.SpyglassZoomOverlay;
 import io.github.ennuil.ok_zoomer.zoom.overlays.ZoomerZoomOverlay;
+import io.github.ennuil.ok_zoomer.zoom.transitions.InstantTransitionMode;
+import io.github.ennuil.ok_zoomer.zoom.transitions.LinearTransitionMode;
+import io.github.ennuil.ok_zoomer.zoom.transitions.SmoothTransitionMode;
 import net.minecraft.resources.ResourceLocation;
 
 public class OkZoomerConfigManager {
@@ -30,16 +30,13 @@ public class OkZoomerConfigManager {
 		Zoom.setTransitionMode(
 			switch (CONFIG.features.zoomTransition.value()) {
 				case SMOOTH -> new SmoothTransitionMode(CONFIG.transitionValues.smoothTransitionFactor.value().floatValue());
-				case LINEAR -> new LinearTransitionMode(CONFIG.transitionValues.minimumLinearStep.value(), CONFIG.transitionValues.maximumLinearStep.value());
+				case LINEAR -> new LinearTransitionMode(CONFIG.transitionValues.linearStep.value());
 				default -> new InstantTransitionMode();
 			}
 		);
 
-		// Sets zoom divisor
-		Zoom.setDefaultZoomDivisor(CONFIG.zoomValues.zoomDivisor.value());
-
 		// Sets mouse modifier
-		configureZoomModifier();
+		OkZoomerConfigManager.configureZoomModifier();
 
 		// Sets zoom overlay
 		// TODO - Restore the "Use Spyglass Texture" option as a "Use Custom Texture" option

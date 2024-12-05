@@ -42,7 +42,7 @@ public abstract class GameRendererMixin {
 		if (!Zoom.isZooming() || !ZoomUtils.hasSmartOcclusion()) {
 			return original;
 		} else {
-			return Mth.positiveCeilDiv(original, Mth.floor(Zoom.getZoomDivisor()));
+			return Mth.positiveCeilDiv(original, Math.max(1, Mth.floor(Zoom.getZoomDivisor())));
 		}
 	}
 

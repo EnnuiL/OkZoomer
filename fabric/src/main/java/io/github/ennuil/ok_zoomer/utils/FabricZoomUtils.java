@@ -23,7 +23,7 @@ public class FabricZoomUtils {
 	}
 
 	public static void defineSafeSmartOcclusion() {
-		// If Sodium is enabled, it's 100% safe to enable Smart Occlusion by default!
+		// If Sodium is enabled, then we have all the pillars required to make Smart Occlusion work smoothly
 		if (FabricLoader.getInstance().isModLoaded("sodium")) {
 			ZoomUtils.enableSafeSmartOcclusion();
 		}

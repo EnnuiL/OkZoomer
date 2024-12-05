@@ -152,7 +152,7 @@ public class OkZoomerConfig extends ReflectiveConfig {
 		public final TrackedValue<Boolean> resetZoomWithMouse = this.value(true);
 
 		@WidgetSize(Size.HALF)
-		@Comment("Improves performance by making the game render less of the world while zoomed in. This may cause flashes on zooming out if the Sodium mod isn't installed.")
+		@Comment("Improves performance by making the game render less of the world while zoomed in. This feature requires the Sodium mod in order to work.")
 		public final TrackedValue<Boolean> smartOcclusion = this.value(true);
 
 		@WidgetSize(Size.HALF)

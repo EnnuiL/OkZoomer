@@ -9,7 +9,6 @@
     "common.EditBoxMixin",
     "common.GameRendererMixin",
     "common.GuiMixin",
-    "common.LevelRendererMixin",
     "common.MouseHandlerMixin",
     "common.RenderStateShardMixin"
   ],

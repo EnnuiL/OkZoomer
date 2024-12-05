@@ -23,6 +23,7 @@ public class OkZoomerClientMod {
 
 		mod.registerExtensionPoint(IConfigScreenFactory.class, ((mod2, screen) -> new OkZoomerConfigScreen(screen)));
 
+		NorgeZoomUtils.defineSafeSmartOcclusion();
 		NorgeZoomUtils.addInitialPredicates();
 	}
 }

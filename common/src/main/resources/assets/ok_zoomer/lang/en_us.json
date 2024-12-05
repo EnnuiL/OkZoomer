@@ -1,4 +1,5 @@
 {
+	"modmenu.descriptionTranslation.ok_zoomer": "A zoom mod that is powerful, lean, and pretty customizable. The zoom is yours!",
 	"config.ok_zoomer.title": "Ok Zoomer Settings",
 	"config.ok_zoomer.features": "Features",
 	"config.ok_zoomer.features.cinematic_camera": "Cinematic Camera",
@@ -76,7 +77,7 @@
 	"config.ok_zoomer.tweaks.reset_zoom_with_mouse": "Reset Zoom with Mouse",
 	"config.ok_zoomer.tweaks.reset_zoom_with_mouse.tooltip": "Allows for resetting the zoom with the middle mouse button.",
 	"config.ok_zoomer.tweaks.smart_occlusion": "Smart Occlusion",
-	"config.ok_zoomer.tweaks.smart_occlusion.tooltip": "Improves performance by making the game render less of the world while zoomed in. This may cause flashes on zooming out if the Sodium mod isn't installed.",
+	"config.ok_zoomer.tweaks.smart_occlusion.tooltip": "Improves performance by making the game render less of the world while zoomed in. This feature requires the Sodium mod in order to work.",
 	"config.ok_zoomer.tweaks.forget_zoom_divisor": "Forget Zoom Divisor",
 	"config.ok_zoomer.tweaks.forget_zoom_divisor.tooltip": "If enabled, the current zoom divisor is forgotten once zooming is finished.",
 	"config.ok_zoomer.tweaks.use_spyglass_sounds": "Use Spyglass Sounds",

@@ -28,11 +28,10 @@ public class ZoomUtils {
 
 	public static final TagKey<Item> ZOOM_DEPENDENCIES_TAG = TagKey.create(Registries.ITEM, ZoomUtils.id("zoom_dependencies"));
 
-	public static int lastZoomCullingFov = 70;
-
 	public static int zoomStep = 0;
 
 	private static Predicate<LocalPlayer> hasSpyglass = player -> player.isCreative();
+	private static boolean safeSmartOcclusion = false;
 
 	// The method used for changing the zoom divisor, used by zoom scrolling and the key binds
 	public static void changeZoomDivisor(Minecraft minecraft, boolean increase) {
@@ -104,5 +103,13 @@ public class ZoomUtils {
 
 	public static void addSpyglassProvider(Predicate<LocalPlayer> provider) {
 		hasSpyglass = hasSpyglass.or(provider);
+	}
+
+	public static void enableSafeSmartOcclusion() {
+		ZoomUtils.safeSmartOcclusion = true;
+	}
+
+	public static boolean hasSmartOcclusion() {
+		return OkZoomerConfigManager.CONFIG.tweaks.smartOcclusion.value() && ZoomUtils.safeSmartOcclusion;
 	}
 }

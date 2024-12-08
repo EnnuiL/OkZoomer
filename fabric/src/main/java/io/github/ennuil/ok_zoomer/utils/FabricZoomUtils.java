@@ -1,6 +1,7 @@
 package io.github.ennuil.ok_zoomer.utils;
 
 import net.fabricmc.fabric.api.tag.client.v1.ClientTags;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.function.Predicate;
@@ -19,5 +20,12 @@ public class FabricZoomUtils {
 
 	public static void addInitialPredicates() {
 		ZoomUtils.addSpyglassProvider(player -> player.getInventory().contains(IS_VALID_SPYGLASS));
+	}
+
+	public static void defineSafeSmartOcclusion() {
+		// If Sodium is enabled, then we have all the pillars required to make Smart Occlusion work smoothly
+		if (FabricLoader.getInstance().isModLoaded("sodium")) {
+			ZoomUtils.enableSafeSmartOcclusion();
+		}
 	}
 }

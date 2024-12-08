@@ -50,10 +50,6 @@ repositories {
 			includeGroup("maven.modrinth")
 		}
 	}
-	maven {
-		name = 'Quilt'
-		url = 'https://maven.quiltmc.org/repository/release'
-	}
 	maven { url = 'https://maven.uuid.gg/releases' } // Up's Mods
 	// maven { url = 'https://maven.ladysnake.org/releases' }
 }

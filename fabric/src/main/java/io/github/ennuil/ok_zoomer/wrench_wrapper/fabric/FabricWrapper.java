@@ -13,4 +13,8 @@ public class FabricWrapper {
 	public static <C extends ReflectiveConfig> C create(String family, String id, Class<C> configCreatorClass) {
 		return ConfigFactory.create(CONFIG_ENVIRONMENT, family, id, configCreatorClass);
 	}
+
+	public static ConfigEnvironment getConfigEnvironment() {
+		return FabricWrapper.CONFIG_ENVIRONMENT;
+	}
 }

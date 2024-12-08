@@ -5,17 +5,15 @@ import net.minecraft.util.Mth;
 // The implementation of the linear transition
 public class LinearTransitionMode implements TransitionMode {
 	private boolean active;
-	private final double minimumLinearStep;
-	private final double maximumLinearStep;
+	private final double linearStep;
 	private float internalMultiplier;
 	private float lastInternalMultiplier;
 	private float internalFade;
 	private float lastInternalFade;
 
-	public LinearTransitionMode(double minimumLinearStep, double maximumLinearStep) {
+	public LinearTransitionMode(double linearStep) {
 		this.active = false;
-		this.minimumLinearStep = minimumLinearStep;
-		this.maximumLinearStep = maximumLinearStep;
+		this.linearStep = linearStep;
 		this.internalMultiplier = 1.0F;
 		this.lastInternalMultiplier = 1.0F;
 		this.internalFade = 0.0F;
@@ -45,9 +43,8 @@ public class LinearTransitionMode implements TransitionMode {
 		this.lastInternalMultiplier = this.internalMultiplier;
 		this.lastInternalFade = this.internalFade;
 
-		double linearStep = Mth.clamp(zoomMultiplier, this.minimumLinearStep, this.maximumLinearStep);
-		this.internalMultiplier = Mth.approach(this.internalMultiplier, zoomMultiplier, (float) linearStep);
-		this.internalFade = Mth.approach(this.internalFade, fadeMultiplier, (float) linearStep);
+		this.internalMultiplier = Mth.approach(this.internalMultiplier, zoomMultiplier, (float) this.linearStep);
+		this.internalFade = Mth.approach(this.internalFade, fadeMultiplier, (float) this.linearStep);
 
 		this.active = active;
 	}

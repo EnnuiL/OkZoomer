@@ -29,9 +29,7 @@ public class ZoomPresets {
 	public static final Map<TrackedValue<?>, Object> PERSISTENT = Map.of(
 		OkZoomerConfigManager.CONFIG.features.zoomMode, ConfigEnums.ZoomModes.PERSISTENT,
 		OkZoomerConfigManager.CONFIG.features.persistentInterface, true,
-		OkZoomerConfigManager.CONFIG.zoomValues.zoomDivisor, 1.0,
-		OkZoomerConfigManager.CONFIG.zoomValues.lowerScrollSteps, 0,
-		OkZoomerConfigManager.CONFIG.zoomValues.upperScrollSteps, 38,
+		OkZoomerConfigManager.CONFIG.zoomValues.defaultScrollStep, 0,
 		OkZoomerConfigManager.CONFIG.tweaks.hideCrosshair, false
 	);
 
@@ -40,10 +38,14 @@ public class ZoomPresets {
 		Map.entry(OkZoomerConfigManager.CONFIG.features.zoomScrolling, false),
 		Map.entry(OkZoomerConfigManager.CONFIG.features.persistentInterface, true),
 		Map.entry(OkZoomerConfigManager.CONFIG.features.zoomOverlay, ConfigEnums.ZoomOverlays.SPYGLASS),
-		Map.entry(OkZoomerConfigManager.CONFIG.features.spyglassMode, ConfigEnums.SpyglassMode.BOTH),
-		Map.entry(OkZoomerConfigManager.CONFIG.zoomValues.zoomDivisor, 10.0),
-		Map.entry(OkZoomerConfigManager.CONFIG.zoomValues.lowerScrollSteps, 8),
-		Map.entry(OkZoomerConfigManager.CONFIG.zoomValues.upperScrollSteps, 16),
+		Map.entry(OkZoomerConfigManager.CONFIG.features.spyglassMode, ConfigEnums.SpyglassModes.BOTH),
+		Map.entry(OkZoomerConfigManager.CONFIG.zoomValues.scrollBase, 10),
+		Map.entry(OkZoomerConfigManager.CONFIG.zoomValues.scrollResolution, 10),
+		Map.entry(OkZoomerConfigManager.CONFIG.zoomValues.defaultScrollStep, 10),
+		Map.entry(OkZoomerConfigManager.CONFIG.zoomValues.scrollStepLimit, 20),
+		Map.entry(OkZoomerConfigManager.CONFIG.legacyScrollValues.zoomDivisor, 10.0),
+		Map.entry(OkZoomerConfigManager.CONFIG.legacyScrollValues.lowerScrollSteps, 8),
+		Map.entry(OkZoomerConfigManager.CONFIG.legacyScrollValues.upperScrollSteps, 16),
 		Map.entry(OkZoomerConfigManager.CONFIG.transitionValues.smoothTransitionFactor, 0.5),
 		Map.entry(OkZoomerConfigManager.CONFIG.tweaks.hideCrosshair, false),
 		Map.entry(OkZoomerConfigManager.CONFIG.tweaks.useSpyglassSounds, true)

@@ -27,9 +27,10 @@ processResources {
 neoForge {
 	version = libs.versions.neoforge
 
+	// TODO - Just use the MC version as-is once Parchment finally catches up
 	parchment {
-		minecraftVersion.set(libs.versions.parchment.minecraft.get())
-		mappingsVersion.set(libs.versions.parchment.mappings.get())
+		minecraftVersion.set('1.21.1')
+		mappingsVersion.set(libs.versions.parchment.get())
 	}
 
 	runs {
@@ -42,12 +43,6 @@ neoForge {
 		"${mod_id}" {
 			sourceSet(sourceSets.main)
 		}
-	}
-}
-
-configurations {
-	'implementation' {
-		exclude group: 'org.quiltmc', module: 'quilt-loader'
 	}
 }
 

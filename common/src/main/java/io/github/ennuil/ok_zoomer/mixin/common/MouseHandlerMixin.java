@@ -20,10 +20,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 // This mixin is responsible for the mouse-behavior-changing part of the zoom
 @Mixin(MouseHandler.class)
 public abstract class MouseHandlerMixin {
-	@Shadow
-	@Final
-	private Minecraft minecraft;
-
 	// Handles zoom scrolling
 	@Inject(
 		method = "onScroll",
@@ -38,7 +34,7 @@ public abstract class MouseHandlerMixin {
 				}
 
 				if (Zoom.isZooming()) {
-					ZoomUtils.changeZoomDivisor(this.minecraft, k > 0);
+					ZoomUtils.changeZoomDivisor(k > 0);
 					ci.cancel();
 				}
 			}

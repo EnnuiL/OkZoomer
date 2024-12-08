@@ -34,6 +34,7 @@ public class OkZoomerClientMod implements ClientModInitializer {
 		ClientTickEvents.END_CLIENT_TICK.register(OpenScreenEvent::endClientTick);
 		ClientCommandRegistrationCallback.EVENT.register(RegisterCommands::registerCommands);
 
+		FabricZoomUtils.defineSafeSmartOcclusion();
 		FabricZoomUtils.addInitialPredicates();
 
 		// Mod compat

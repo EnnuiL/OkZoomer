@@ -4,6 +4,7 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
+import io.github.ennuil.ok_zoomer.utils.ZoomUtils;
 import io.github.ennuil.ok_zoomer.zoom.Zoom;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.util.Mth;
@@ -38,10 +39,10 @@ public abstract class GameRendererMixin {
 		)
 	)
 	private int modifyCulling(int original) {
-		if (!Zoom.isZooming()) {
+		if (!Zoom.isZooming() || !ZoomUtils.hasSmartOcclusion()) {
 			return original;
 		} else {
-			return Mth.positiveCeilDiv(original, Mth.floor(Zoom.getZoomDivisor()));
+			return Mth.positiveCeilDiv(original, Math.max(1, Mth.floor(Zoom.getZoomDivisor())));
 		}
 	}
 

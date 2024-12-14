@@ -27,9 +27,8 @@ processResources {
 neoForge {
 	version = libs.versions.neoforge
 
-	// TODO - Just use the MC version as-is once Parchment finally catches up
 	parchment {
-		minecraftVersion.set('1.21.1')
+		minecraftVersion.set(libs.versions.minecraft.get())
 		mappingsVersion.set(libs.versions.parchment.get())
 	}
 

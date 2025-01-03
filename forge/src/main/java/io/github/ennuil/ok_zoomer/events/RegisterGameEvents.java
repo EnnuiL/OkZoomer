@@ -3,16 +3,16 @@ package io.github.ennuil.ok_zoomer.events;
 import io.github.ennuil.ok_zoomer.config.screen.OkZoomerConfigScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.commands.Commands;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.ClientTickEvent;
-import net.neoforged.neoforge.client.event.RegisterClientCommandsEvent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.RegisterClientCommandsEvent;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 
-@EventBusSubscriber(value = Dist.CLIENT, bus = EventBusSubscriber.Bus.GAME, modid = "ok_zoomer")
+@Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE, modid = "ok_zoomer")
 public class RegisterGameEvents {
 	@SubscribeEvent
-	public static void onClientTick(ClientTickEvent.Pre event) {
+	public static void onClientTick(TickEvent.ClientTickEvent event) {
 		ManageZoomEvent.startClientTick(Minecraft.getInstance());
 		ManageExtraKeysEvent.startClientTick(Minecraft.getInstance());
 	}

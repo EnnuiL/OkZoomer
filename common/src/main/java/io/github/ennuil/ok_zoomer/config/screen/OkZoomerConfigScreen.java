@@ -9,6 +9,7 @@ import io.github.ennuil.ok_zoomer.utils.ModUtils;
 import io.github.ennuil.ok_zoomer.utils.ZoomUtils;
 import it.unimi.dsi.fastutil.objects.ObjectArraySet;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectArrayMap;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
@@ -34,7 +35,6 @@ public class OkZoomerConfigScreen extends Screen {
 	private final ResourceLocation configId;
 	private final Screen parent;
 	private ConfigTextUtils configTextUtils;
-	private final HeaderAndFooterLayout layout = new HeaderAndFooterLayout(this);
 	private OkZoomerAbstractSelectionList entryListWidget;
 
 	private final Map<TrackedValue<Object>, Object> newValues;
@@ -190,21 +190,17 @@ public class OkZoomerConfigScreen extends Screen {
 		}
 
 		this.entryListWidget.finish();
-		this.addRenderableWidget(this.entryListWidget);
+		this.addWidget(this.entryListWidget);
 
-		this.layout.addTitleHeader(this.title, this.font);
-		var footerLayout = this.layout.addToFooter(LinearLayout.horizontal().spacing(8));
-		footerLayout.addChild(Button.builder(Component.translatable("config.ok_zoomer.discard_changes"), button -> this.resetNewValues()).width(150).build());
-		footerLayout.addChild(Button.builder(CommonComponents.GUI_DONE, button -> this.onClose()).width(150).build());
+		this.addRenderableWidget(
+			Button.builder(Component.translatable("config.ok_zoomer.discard_changes"), button -> this.resetNewValues())
+				.bounds(this.width / 2 - 155, this.height - 27, 150, 20)
+				.build());
 
-		this.layout.visitWidgets(this::addRenderableWidget);
-		this.repositionElements();
-	}
-
-	@Override
-	protected void repositionElements() {
-		this.layout.arrangeElements();
-		this.entryListWidget.updateSize(this.width, this.layout);
+		this.addRenderableWidget(
+			Button.builder(CommonComponents.GUI_DONE, button -> this.minecraft.setScreen(this.parent))
+				.bounds(this.width / 2 + 5, this.height - 27, 150, 20)
+				.build());
 	}
 
 	private void addOptionToList(AbstractWidget button, WidgetSize.Size size) {
@@ -222,6 +218,15 @@ public class OkZoomerConfigScreen extends Screen {
 			}
 			this.entryListWidget.addButton(button);
 		}
+	}
+
+	@Override
+	public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
+		this.renderBackground(graphics);
+		// Y: 20 is technically the vanilla Y, but I'd rather go for as close to 1.20.5 vanilla Y as possible
+		graphics.drawCenteredString(this.font, ConfigTextUtils.getConfigTitle(configId), this.width / 2, 15, CommonColors.WHITE);
+		this.entryListWidget.render(graphics, mouseX, mouseY, partialTick);
+		super.render(graphics, mouseX, mouseY, partialTick);
 	}
 
 	@Override

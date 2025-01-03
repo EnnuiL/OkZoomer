@@ -1,12 +1,12 @@
-package io.github.ennuil.ok_zoomer.wrench_wrapper.norge;
+package io.github.ennuil.ok_zoomer.wrench_wrapper.forge;
 
-import net.neoforged.fml.loading.FMLPaths;
+import net.minecraftforge.fml.loading.FMLPaths;
 import org.quiltmc.config.api.ReflectiveConfig;
 import org.quiltmc.config.api.serializers.TomlSerializer;
 import org.quiltmc.config.implementor_api.ConfigEnvironment;
 import org.quiltmc.config.implementor_api.ConfigFactory;
 
-public class NorgeWrapper {
+public class ForgeWrapper {
 	@SuppressWarnings("deprecation")
 	private static final ConfigEnvironment CONFIG_ENVIRONMENT = new ConfigEnvironment(FMLPaths.CONFIGDIR.get(), TomlSerializer.INSTANCE, TomlSerializer.INSTANCE);
 
@@ -15,6 +15,6 @@ public class NorgeWrapper {
 	}
 
 	public static ConfigEnvironment getConfigEnvironment() {
-		return NorgeWrapper.CONFIG_ENVIRONMENT;
+		return ForgeWrapper.CONFIG_ENVIRONMENT;
 	}
 }

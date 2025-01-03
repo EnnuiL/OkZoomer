@@ -28,7 +28,7 @@ dependencies {
 	implementation libs.wrench.wrapper
 
 	modCompileOnly libs.bundles.trinkets
-	modLocalRuntime libs.bundles.trinkets
+	//modLocalRuntime libs.bundles.trinkets
 
 	include libs.wrench.wrapper
 }

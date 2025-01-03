@@ -22,17 +22,6 @@ public abstract class EditBoxMixin {
 	@ModifyExpressionValue(
 		method = "renderWidget",
 		at = @At(
-			value = "INVOKE",
-			target = "Lnet/minecraft/client/gui/components/EditBox;getHeight()I"
-		)
-	)
-	private int modifyHeight(int original) {
-		return (EditBox) (Object) this instanceof LabelledEditBox ? original - 12 : original;
-	}
-
-	@ModifyExpressionValue(
-		method = "renderWidget",
-		at = @At(
 			value = "FIELD",
 			target = "Lnet/minecraft/client/gui/components/EditBox;height:I"
 		)

@@ -19,7 +19,7 @@ public class FabricZoomUtils {
 	}
 
 	public static void addInitialPredicates() {
-		ZoomUtils.addSpyglassProvider(player -> player.getInventory().contains(IS_VALID_SPYGLASS));
+		ZoomUtils.addSpyglassProvider(player -> player.getInventory().hasAnyMatching(IS_VALID_SPYGLASS));
 	}
 
 	public static void defineSafeSmartOcclusion() {

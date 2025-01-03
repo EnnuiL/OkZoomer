@@ -1,16 +1,15 @@
 package io.github.ennuil.ok_zoomer.config.screen.components;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ComponentPath;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.AbstractContainerWidget;
 import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.Renderable;
+import net.minecraft.client.gui.components.events.AbstractContainerEventHandler;
 import net.minecraft.client.gui.components.events.ContainerEventHandler;
 import net.minecraft.client.gui.components.events.GuiEventListener;
-import net.minecraft.client.gui.layouts.HeaderAndFooterLayout;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -18,40 +17,37 @@ import net.minecraft.client.gui.navigation.FocusNavigationEvent;
 import net.minecraft.client.gui.navigation.ScreenAxis;
 import net.minecraft.client.gui.navigation.ScreenDirection;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.CommonColors;
 import net.minecraft.util.Mth;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class OkZoomerAbstractSelectionList extends AbstractContainerWidget {
-	private static final ResourceLocation SCROLLER_SPRITE = ResourceLocation.withDefaultNamespace("widget/scroller");
-	private static final ResourceLocation SCROLLER_BACKGROUND_SPRITE = ResourceLocation.withDefaultNamespace("widget/scroller_background");
-	private static final ResourceLocation MENU_LIST_BACKGROUND = ResourceLocation.withDefaultNamespace("textures/gui/menu_list_background.png");
-	private static final ResourceLocation INWORLD_MENU_LIST_BACKGROUND = ResourceLocation.withDefaultNamespace("textures/gui/inworld_menu_list_background.png");
-
+public class OkZoomerAbstractSelectionList extends AbstractContainerEventHandler implements Renderable, NarratableEntry {
 	private final Minecraft minecraft;
 	private final List<Entry> children;
 	private IntList entryHeights;
 
+	private int width;
+	private int height;
+	private int y;
+
 	private int contentHeight;
 	private int scrollAmount;
 	private boolean scrolling;
-	@Nullable
 	private Entry hovered;
 
 	public OkZoomerAbstractSelectionList(Minecraft minecraft, int width, int height, int y) {
-		super(0, y, width, height, CommonComponents.EMPTY);
 		this.minecraft = minecraft;
 		this.children = new ArrayList<>();
 		this.entryHeights = new IntArrayList();
+		this.width = width;
+		this.height = height;
+		this.y = y;
 
 		this.contentHeight = height;
 
@@ -63,28 +59,29 @@ public class OkZoomerAbstractSelectionList extends AbstractContainerWidget {
 		this.update();
 	}
 
-	@Nullable
 	public Entry getFocused() {
 		return (Entry) super.getFocused();
 	}
 
 	@Override
-	public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		this.hovered = this.isMouseOver(mouseX, mouseY) ? this.getEntryAtPosition(mouseX, mouseY) : null;
-		this.renderListBackground(graphics);
-		graphics.enableScissor(this.getX(), this.getY(), this.getRight(), this.getBottom());
+		this.renderBackground(graphics);
+		graphics.enableScissor(0, this.y, this.width, this.height + this.y);
 
-		int i = this.getY() - this.scrollAmount;
+		int i = this.y - this.scrollAmount;
 		for (var child : children) {
 			int oldI = i;
 			i += child.getEntryHeight();
-			if (i >= this.getY() && oldI <= this.height + this.getY()) {
-				int xToRender = this.getX() + this.width / 2 - this.getRowWidth() / 2;
+			if (i >= this.y && oldI <= this.height + this.y) {
+				int xToRender = 0 + this.width / 2 - this.getRowWidth() / 2;
 				child.render(graphics, xToRender, oldI, this.getRowWidth(), mouseX, mouseY, delta);
 			}
 		}
 		graphics.disableScissor();
-		this.renderListSeparators(graphics);
+
+		graphics.fillGradient(RenderType.guiOverlay(), 0, this.y, this.width, this.y + 4, CommonColors.BLACK, 0x00000000, 0);
+		graphics.fillGradient(RenderType.guiOverlay(), 0, this.height + this.y - 4, this.width, this.height + this.y + 4, 0x00000000, CommonColors.BLACK, 0);
 
 		if (this.contentHeight - this.height > 0) {
 			this.renderScrollBar(graphics);
@@ -92,7 +89,7 @@ public class OkZoomerAbstractSelectionList extends AbstractContainerWidget {
 	}
 
 	@Override
-	public void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {
+	public void updateNarration(NarrationElementOutput narrationElementOutput) {
 		var hovered = this.getHovered();
 		if (hovered != null) {
 			hovered.updateNarration(narrationElementOutput.nest());
@@ -119,12 +116,12 @@ public class OkZoomerAbstractSelectionList extends AbstractContainerWidget {
 	}
 
 	@Override
-	public @NotNull List<Entry> children() {
+	public List<Entry> children() {
 		return this.children;
 	}
 
 	@Override
-	public @NotNull NarratableEntry.NarrationPriority narrationPriority() {
+	public NarratableEntry.NarrationPriority narrationPriority() {
 		if (this.isFocused()) {
 			return NarrationPriority.FOCUSED;
 		} else {
@@ -132,20 +129,14 @@ public class OkZoomerAbstractSelectionList extends AbstractContainerWidget {
 		}
 	}
 
-	private void renderListBackground(GuiGraphics graphics) {
-		RenderSystem.enableBlend();
-		var backgroundLocation = this.minecraft.level == null ? MENU_LIST_BACKGROUND : INWORLD_MENU_LIST_BACKGROUND;
-		graphics.blit(backgroundLocation, this.getX(), this.getY(), this.getRight(), this.getBottom() + this.getScrollAmount(), this.width, this.height, 32,32);
-		RenderSystem.disableBlend();
-	}
-
-	private void renderListSeparators(GuiGraphics graphics) {
-		RenderSystem.enableBlend();
-		var headerSeparatorLocation = this.minecraft.level == null ? Screen.HEADER_SEPARATOR : Screen.INWORLD_HEADER_SEPARATOR;
-		var footerSeparatorLocation = this.minecraft.level == null ? Screen.FOOTER_SEPARATOR : Screen.INWORLD_FOOTER_SEPARATOR;
-		graphics.blit(headerSeparatorLocation, this.getX(), this.getY() - 2, 0.0F, 0.0F, this.width, 2, 32, 2);
-		graphics.blit(footerSeparatorLocation, this.getX(), this.getBottom(), 0.0F, 0.0F, this.width, 2, 32, 2);
-		RenderSystem.disableBlend();
+	private void renderBackground(GuiGraphics graphics) {
+		if (this.minecraft.level == null) {
+			graphics.setColor(0.125F, 0.125F, 0.125F, 1.0F);
+			graphics.blit(Screen.BACKGROUND_LOCATION, 0, this.y, this.width, this.height - this.y + this.scrollAmount, this.width, this.height, 32, 32);
+			graphics.setColor(1.0F, 1.0F, 1.0F, 1.0F);
+		} else {
+			graphics.fill(0, this.y, this.width, this.height + this.y, 0x60000000);
+		}
 	}
 
 	private void renderScrollBar(GuiGraphics graphics) {
@@ -153,12 +144,11 @@ public class OkZoomerAbstractSelectionList extends AbstractContainerWidget {
 		int x = this.getScrollBarPosX();
 
 		var scale = (this.scrollAmount / (double) (this.contentHeight - this.height));
-		var y = this.getY() + (int) (scale * (this.height - size));
+		var y = this.y + (int) (scale * (this.height - size));
 
-		RenderSystem.enableBlend();
-		graphics.blitSprite(SCROLLER_BACKGROUND_SPRITE, x, this.getY(), 6, this.height);
-		graphics.blitSprite(SCROLLER_SPRITE, x, y, 6, size);
-		RenderSystem.disableBlend();
+		graphics.fill(x, this.y, x + 6, this.y + this.height, CommonColors.BLACK);
+		graphics.fill(x, y, x + 6, size + y, 0xFF808080);
+		graphics.fill(x, y, x + 6 - 1, size + y - 1, 0xFFC0C0C0);
 	}
 
 	protected int getScrollBarPosX() {
@@ -191,13 +181,13 @@ public class OkZoomerAbstractSelectionList extends AbstractContainerWidget {
 
 	@Override
 	public boolean isMouseOver(double mouseX, double mouseY) {
-		return mouseX >= this.getX() && mouseX <= this.getRight() && mouseY >= this.getY() && mouseY <= this.getBottom();
+		return mouseX >= 0 && mouseX <= this.width && mouseY >= this.y && mouseY <= this.y + this.height;
 	}
 
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
 		if (!this.scrolling) {
-			int pos = (this.width - this.getX()) / 2 + 156;
+			int pos = this.width / 2 + 156;
 			if (mouseX > pos && mouseX < pos + 6) {
 				this.scrolling = true;
 				return true;
@@ -225,9 +215,10 @@ public class OkZoomerAbstractSelectionList extends AbstractContainerWidget {
 		return this.scrolling;
 	}
 
+
 	@Override
-	public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
-		this.setScrollAmount((int) (this.scrollAmount - scrollY * 10));
+	public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
+		this.setScrollAmount((int) (this.scrollAmount - delta * 10));
 		return true;
 	}
 
@@ -236,9 +227,9 @@ public class OkZoomerAbstractSelectionList extends AbstractContainerWidget {
 		if (super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY)) {
 			return true;
 		} else if (button == GLFW.GLFW_MOUSE_BUTTON_1 && this.scrolling) {
-			if (mouseY < this.getY()) {
+			if (mouseY < this.y) {
 				this.setScrollAmount(0);
-			} else if (mouseY > this.getY() + this.height) {
+			} else if (mouseY > this.y + this.height) {
 				this.setScrollAmount(this.contentHeight);
 			} else {
 				int size = Mth.clamp((this.height * this.height) / this.contentHeight, 0, this.height - 6);
@@ -263,7 +254,7 @@ public class OkZoomerAbstractSelectionList extends AbstractContainerWidget {
 	}
 
 	@Override
-	public void setFocused(@Nullable GuiEventListener child) {
+	public void setFocused(GuiEventListener child) {
 		super.setFocused(child);
 
 		int i = this.children.indexOf(child);
@@ -284,32 +275,22 @@ public class OkZoomerAbstractSelectionList extends AbstractContainerWidget {
 	}
 
 	protected int getRowTop(int index) {
-		return this.getY() + 4 - this.getScrollAmount() + getEntryHeightSum(index);
+		return this.y + 4 - this.getScrollAmount() + getEntryHeightSum(index);
 	}
 
 	public int getRowWidth() {
 		return 310;
 	}
 
-	public void updateSize(int width, HeaderAndFooterLayout headerAndFooterLayout) {
-		this.updateSizeAndPosition(width, headerAndFooterLayout.getContentHeight(), headerAndFooterLayout.getHeaderHeight());
-	}
-
-	public void updateSizeAndPosition(int width, int height, int y) {
-		this.setSize(width, height);
-		this.setY(y);
-		this.update();
-	}
-
 	protected void ensureVisible(int index) {
 		int rowTop = this.getRowTop(index);
-		int rowTop2 = rowTop - this.getY() - 4 - entryHeights.getInt(index);
+		int rowTop2 = rowTop - this.y - 4 - entryHeights.getInt(index);
 
 		if (rowTop2 < 0) {
 			this.setScrollAmount(this.getScrollAmount() + rowTop2);
 		}
 
-		int rowTop3 = (this.getY() + this.height) - rowTop - (entryHeights.getInt(index) * 2);
+		int rowTop3 = (this.y + this.height) - rowTop - (entryHeights.getInt(index) * 2);
 
 		if (rowTop3 < 0) {
 			this.setScrollAmount(this.getScrollAmount() - rowTop3);
@@ -318,7 +299,7 @@ public class OkZoomerAbstractSelectionList extends AbstractContainerWidget {
 
 	// This is so faithful to Vanilla's algo that it also inherits the Bottom Void Pixel of Doom! Oh no!
 	protected final Entry getEntryAtPosition(double x, double y) {
-		int center = this.getX() + this.width / 2;
+		int center = this.width / 2;
 		int halfRowWidth = this.getRowWidth() / 2;
 		int rowMinX = center - halfRowWidth;
 		int rowMaxX = center + halfRowWidth;
@@ -326,7 +307,7 @@ public class OkZoomerAbstractSelectionList extends AbstractContainerWidget {
 		int sum = 0;
 		int i = 0;
 
-		while (sum <= Mth.floor(y - this.getY()) + this.scrollAmount) {
+		while (sum <= Mth.floor(y - this.y) + this.scrollAmount) {
 			if (i < this.entryHeights.size()) {
 				sum += this.entryHeights.getInt(i);
 				i++;
@@ -356,8 +337,7 @@ public class OkZoomerAbstractSelectionList extends AbstractContainerWidget {
 	}
 	*/
 
-	@Nullable
-	protected Entry nextEntry(ScreenDirection direction, Predicate<Entry> predicate, @Nullable Entry currentEntry) {
+	protected Entry nextEntry(ScreenDirection direction, Predicate<Entry> predicate, Entry currentEntry) {
 		int i = switch (direction) {
 			case LEFT, RIGHT -> 0;
 			case UP -> -1;
@@ -384,7 +364,6 @@ public class OkZoomerAbstractSelectionList extends AbstractContainerWidget {
 		return null;
 	}
 
-	@Nullable
 	@Override
 	public ComponentPath nextFocusPath(FocusNavigationEvent event) {
 		if (this.children.isEmpty()) {
@@ -434,7 +413,7 @@ public class OkZoomerAbstractSelectionList extends AbstractContainerWidget {
 		}
 	}
 
-	public @Nullable Entry getHovered() {
+	public Entry getHovered() {
 		return this.hovered;
 	}
 
@@ -451,9 +430,7 @@ public class OkZoomerAbstractSelectionList extends AbstractContainerWidget {
 	}
 
 	public abstract class Entry implements ContainerEventHandler {
-		@Nullable
 		private GuiEventListener focused;
-		@Nullable
 		private NarratableEntry lastNarratable;
 		private boolean dragging;
 
@@ -471,7 +448,6 @@ public class OkZoomerAbstractSelectionList extends AbstractContainerWidget {
 			this.dragging = dragging;
 		}
 
-		@Nullable
 		@Override
 		public GuiEventListener getFocused() {
 			return this.focused;
@@ -483,7 +459,7 @@ public class OkZoomerAbstractSelectionList extends AbstractContainerWidget {
 		}
 
 		@Override
-		public void setFocused(@Nullable GuiEventListener focused) {
+		public void setFocused(GuiEventListener focused) {
 			if (this.focused != null) {
 				this.focused.setFocused(false);
 			}
@@ -495,7 +471,6 @@ public class OkZoomerAbstractSelectionList extends AbstractContainerWidget {
 			this.focused = focused;
 		}
 
-		@Nullable
 		public ComponentPath getFocusPathAtIndex(FocusNavigationEvent event, int index) {
 			if (this.children().isEmpty()) {
 				return null;
@@ -505,7 +480,6 @@ public class OkZoomerAbstractSelectionList extends AbstractContainerWidget {
 			}
 		}
 
-		@Nullable
 		@Override
 		public ComponentPath nextFocusPath(FocusNavigationEvent event) {
 			if (event instanceof FocusNavigationEvent.ArrowNavigation arrowNavigation) {
@@ -567,7 +541,7 @@ public class OkZoomerAbstractSelectionList extends AbstractContainerWidget {
 		}
 
 		@Override
-		public @Nullable ComponentPath nextFocusPath(FocusNavigationEvent event) {
+		public ComponentPath nextFocusPath(FocusNavigationEvent event) {
 			return null;
 		}
 
@@ -577,7 +551,7 @@ public class OkZoomerAbstractSelectionList extends AbstractContainerWidget {
 		}
 
 		@Override
-		public @NotNull List<? extends GuiEventListener> children() {
+		public List<? extends GuiEventListener> children() {
 			return List.of();
 		}
 
@@ -585,7 +559,7 @@ public class OkZoomerAbstractSelectionList extends AbstractContainerWidget {
 		public List<? extends NarratableEntry> narratables() {
 			return List.of(new NarratableEntry() {
 				@Override
-				public @NotNull NarrationPriority narrationPriority() {
+				public NarrationPriority narrationPriority() {
 					return NarrationPriority.HOVERED;
 				}
 
@@ -638,7 +612,7 @@ public class OkZoomerAbstractSelectionList extends AbstractContainerWidget {
 		}
 
 		@Override
-		public @NotNull List<? extends GuiEventListener> children() {
+		public List<? extends GuiEventListener> children() {
 			return this.buttons;
 		}
 

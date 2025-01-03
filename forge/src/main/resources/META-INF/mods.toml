@@ -1,0 +1,32 @@
+modLoader = "javafml"
+loaderVersion = "*"
+license = "All rights reserved"
+
+[[mods]]
+modId = "ok_zoomer"
+version = "${version}"
+displayName = "Ok Zoomer"
+logoFile = "icon.png"
+authors = "Ennui Langeweile and Up"
+description = """
+A zoom mod that is powerful, lean, and pretty customizable. The zoom is yours!
+"""
+
+[[dependencies.ok_zoomer]]
+modId = "forge"
+mandatory = true
+versionRange = "[47.3.0,47.4.0)"
+ordering = "NONE"
+side = "CLIENT"
+
+[[dependencies.ok_zoomer]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.20.1,1.20.2)"
+ordering = "NONE"
+side = "CLIENT"
+
+[mc-publish]
+modrinth = "${modrinth_id}"
+curseforge = "${curseforge_id}"
+loaders = [ "neoforge" ]

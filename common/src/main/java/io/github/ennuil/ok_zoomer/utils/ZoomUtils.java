@@ -24,8 +24,6 @@ public class ZoomUtils {
 	// The logger, used everywhere to print messages to the console
 	public static final Logger LOGGER = LoggerFactory.getLogger("Ok Zoomer");
 
-	public static final SystemToast.SystemToastId TOAST_ID = new SystemToast.SystemToastId();
-
 	public static final TagKey<Item> ZOOM_DEPENDENCIES_TAG = TagKey.create(Registries.ITEM, ModUtils.id("zoom_dependencies"));
 
 	public static int zoomStep = 0;
@@ -103,7 +101,7 @@ public class ZoomUtils {
 				if (userPrompted) {
 					ZoomUtils.LOGGER.info("[Ok Zoomer] The \"Save Toolbar Activator\" keybind was occupying C! Unbinding...");
 					client.getToasts().addToast(SystemToast.multiline(
-						client, TOAST_ID, Component.translatable("toast.ok_zoomer.title"),
+						client, SystemToast.SystemToastIds.TUTORIAL_HINT, Component.translatable("toast.ok_zoomer.title"),
 						Component.translatable("toast.ok_zoomer.unbind_conflicting_key.success")));
 				} else {
 					ZoomUtils.LOGGER.info("[Ok Zoomer] The \"Save Toolbar Activator\" keybind was occupying C! Unbinding... This process won't be repeated until specified in the config.");
@@ -115,7 +113,7 @@ public class ZoomUtils {
 				ZoomUtils.LOGGER.info("[Ok Zoomer] No conflicts with the \"Save Toolbar Activator\" keybind were found!");
 				if (userPrompted) {
 					client.getToasts().addToast(SystemToast.multiline(
-						client, TOAST_ID, Component.translatable("toast.ok_zoomer.title"),
+						client, SystemToast.SystemToastIds.TUTORIAL_HINT, Component.translatable("toast.ok_zoomer.title"),
 						Component.translatable("toast.ok_zoomer.unbind_conflicting_key.no_conflict")));
 				}
 			}

@@ -26,15 +26,15 @@ public abstract class MouseHandlerMixin {
 		at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;isSpectator()Z"),
 		cancellable = true
 	)
-	private void zoomerOnMouseScroll(CallbackInfo ci, @Local(ordinal = 2) int k) {
-		if (k != 0) {
+	private void zoomerOnMouseScroll(CallbackInfo ci, @Local int i) {
+		if (i != 0) {
 			if (OkZoomerConfigManager.CONFIG.features.zoomScrolling.value()) {
 				if (OkZoomerConfigManager.CONFIG.features.zoomMode.value().equals(ZoomModes.PERSISTENT)) {
 					if (!ZoomKeyBinds.ZOOM_KEY.isDown()) return;
 				}
 
 				if (Zoom.isZooming()) {
-					ZoomUtils.changeZoomDivisor(k > 0);
+					ZoomUtils.changeZoomDivisor(i > 0);
 					ci.cancel();
 				}
 			}

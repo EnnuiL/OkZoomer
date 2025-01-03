@@ -2,8 +2,9 @@
 	"required": true,
 	"minVersion": "0.8",
 	"package": "io.github.ennuil.ok_zoomer.mixin.fabric",
-	"compatibilityLevel": "JAVA_21",
+	"compatibilityLevel": "JAVA_17",
 	"client": [
+		"BlockEntityRendererMixin",
 		"MouseHandlerMixin"
 	],
 	"injectors": {

@@ -1,23 +1,26 @@
 [versions]
-minecraft = "1.21.1"
-parchment = "2024.11.17"
+minecraft = "1.20.1"
+parchment = "2023.09.03"
 
 fabric_loom = "1.9.2"
 fabric_loader = "0.16.9"
 moddevgradle = "2.0.72"
-neoforge = "21.1.93"
+forge = "1.20.1-47.3.22"
 
-fabric_api = "0.114.0+1.21.1"
-wrench_wrapper = "0.6.1"
+fabric_api = "0.92.2+1.20.1"
+wrench_wrapper = "0.6.2"
 
-modmenu = "11.0.3"
-trinkets = "3.10.0"
-cca = "6.1.1"
+modmenu = "7.2.2"
+trinkets = "3.7.2"
+cca = "6.1.2"
+
+sponge = "0.8.5"
+mixinextras = "0.4.1"
 
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
 fabric_loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabric_loader" }
-parchment = { module = "org.parchmentmc.data:parchment-1.21.1", version.ref = "parchment" }
+parchment = { module = "org.parchmentmc.data:parchment-1.20.1", version.ref = "parchment" }
 
 fabric_api = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric_api" }
 wrench_wrapper = { module = "io.github.ennuil:wrench_wrapper", version.ref = "wrench_wrapper" }
@@ -27,10 +30,14 @@ trinkets = { module = "dev.emi:trinkets", version.ref = "trinkets" }
 cca_base = { module = "org.ladysnake.cardinal-components-api:cardinal-components-base", version.ref = "cca" }
 cca_entity = { module = "org.ladysnake.cardinal-components-api:cardinal-components-entity", version.ref = "cca" }
 
+sponge = { module = "org.spongepowered:mixin", version.ref = "sponge" }
+mixinextras_common = { module = "io.github.llamalad7:mixinextras-common", version.ref = "mixinextras" }
+mixinextras_forge = { module = "io.github.llamalad7:mixinextras-forge", version.ref = "mixinextras" }
+
 # If you have multiple similar dependencies, you can declare a dependency bundle and reference it on the build script with "libs.bundles.example".
 [bundles]
 trinkets = ["trinkets", "cca_base", "cca_entity"]
 
 [plugins]
 fabric_loom = { id = "fabric-loom", version.ref = "fabric_loom" }
-moddevgradle = { id = "net.neoforged.moddev", version.ref = "moddevgradle" }
+moddevgradle = { id = "net.neoforged.moddev.legacyforge", version.ref = "moddevgradle" }

@@ -1,7 +1,6 @@
 package io.github.ennuil.ok_zoomer.zoom.overlays;
 
 import io.github.ennuil.ok_zoomer.zoom.transitions.TransitionMode;
-import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.GuiGraphics;
 
 /**
@@ -12,9 +11,9 @@ public interface ZoomOverlay {
 
 	default boolean cancelOverlayRendering() { return false; }
 
-	void renderOverlay(GuiGraphics graphics, DeltaTracker deltaTracker, TransitionMode transitionMode);
+	void renderOverlay(GuiGraphics graphics, TransitionMode transitionMode);
 
 	void tick(boolean active, double divisor, TransitionMode transitionMode);
 
-	default void tickBeforeRender(DeltaTracker deltaTracker) {}
+	default void tickBeforeRender() {}
 }

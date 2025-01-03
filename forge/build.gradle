@@ -3,9 +3,10 @@ plugins {
 	alias libs.plugins.moddevgradle
 }
 
-base.archivesName = 'ok_zoomer-neo'
+base.archivesName = 'ok_zoomer-forge'
 
 repositories {
+	mavenLocal()
 	maven { url = 'https://maven.neoforged.net/releases' }
 }
 
@@ -19,13 +20,13 @@ processResources {
 	]
 	it.inputs.properties(expandProps)
 
-	it.filesMatching('META-INF/neoforge.mods.toml') {
+	it.filesMatching('META-INF/mods.toml') {
 		it.expand expandProps
 	}
 }
 
-neoForge {
-	version = libs.versions.neoforge.get()
+legacyForge {
+	version = libs.versions.forge.get()
 
 	parchment {
 		minecraftVersion = libs.versions.minecraft.get()
@@ -39,13 +40,35 @@ neoForge {
 	}
 
 	mods {
-		"${mod_id}" {
+		ok_zoomer {
 			sourceSet(sourceSets.main)
 		}
 	}
 }
 
 dependencies {
+	annotationProcessor variantOf(libs.sponge) { classifier("processor") }
+	annotationProcessor libs.mixinextras.common
+
 	implementation libs.wrench.wrapper
 	jarJar libs.wrench.wrapper
+
+	compileOnly libs.mixinextras.common
+	implementation libs.mixinextras.forge
+	jarJar libs.mixinextras.forge
+}
+
+mixin {
+	add sourceSets.main, 'mixins.ok_zoomer.refmap.json'
+	config "ok_zoomer_forge.mixins.json"
+}
+
+jar {
+	manifest.attributes([
+	    "MixinConfigs": "ok_zoomer_forge.mixins.json"
+	])
+}
+
+obfuscation {
+
 }

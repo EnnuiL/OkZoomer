@@ -1,0 +1,23 @@
+{
+	"required": true,
+	"minVersion": "0.8",
+	"package": "io.github.ennuil.ok_zoomer.mixin",
+	"compatibilityLevel": "JAVA_17",
+	"mixins": [
+		"common.EntityMixin"
+	],
+	"client": [
+		"common.AbstractClientPlayerMixin",
+		"common.EditBoxAccessor",
+		"common.EditBoxMixin",
+		"common.GameRendererMixin",
+		"common.GuiMixin",
+		"common.IntegratedServerMixin",
+		"common.MouseHandlerMixin",
+		"forge.BlockEntityRendererMixin",
+		"forge.MouseHandlerMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

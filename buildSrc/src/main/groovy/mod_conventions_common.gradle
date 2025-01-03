@@ -3,7 +3,7 @@ plugins {
 	id 'maven-publish'
 }
 
-def javaVersion = 21
+def javaVersion = 17
 
 static String createVersionString() {
 	def ENV = System.getenv()

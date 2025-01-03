@@ -25,11 +25,11 @@ processResources {
 }
 
 neoForge {
-	version = libs.versions.neoforge
+	version = libs.versions.neoforge.get()
 
 	parchment {
-		minecraftVersion.set(libs.versions.minecraft.get())
-		mappingsVersion.set(libs.versions.parchment.get())
+		minecraftVersion = libs.versions.minecraft.get()
+		mappingsVersion = libs.versions.parchment.get()
 	}
 
 	runs {

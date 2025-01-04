@@ -65,7 +65,7 @@ public class SpyglassZoomOverlay implements ZoomOverlay {
 		if (!this.active) {
 			this.scale = 0.5F;
 		} else {
-			this.scale = Mth.lerp(0.5F * Minecraft.getInstance().getDeltaFrameTime(), this.scale, 1.125F);
+			this.scale = Mth.lerp(0.5F * Minecraft.getInstance().getFrameTime(), this.scale, 1.125F);
 		}
 	}
 }

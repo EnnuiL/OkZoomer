@@ -90,7 +90,7 @@ public abstract class GuiMixin {
 		boolean hideCrosshair = OkZoomerConfigManager.CONFIG.tweaks.hideCrosshair.value();
 		if (persistentInterface || hideCrosshair || !Zoom.isTransitionActive()) {
 			if (hideCrosshair) {
-				float fade = 1.0F - Zoom.getTransitionMode().getFade(Minecraft.getInstance().getDeltaFrameTime());
+				float fade = 1.0F - Zoom.getTransitionMode().getFade(Minecraft.getInstance().getFrameTime());
 				RenderSystem.setShaderColor(fade, fade, fade, fade);
 			}
 			original.call(graphics);

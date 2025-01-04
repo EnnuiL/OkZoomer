@@ -4,7 +4,7 @@ parchment = "2023.09.03"
 
 fabric_loom = "1.9.2"
 fabric_loader = "0.16.9"
-moddevgradle = "2.0.72"
+moddevgradle = "2.0.73"
 forge = "1.20.1-47.3.22"
 
 fabric_api = "0.92.2+1.20.1"

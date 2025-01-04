@@ -35,11 +35,11 @@ public class WrenchWrapper {
 				var clazz = Objects.requireNonNull(WrenchWrapper.getClass("io.github.ennuil.ok_zoomer.wrench_wrapper.quilt.QuiltWrapper"));
 				return (ConfigEnvironment) clazz.getMethod("getConfigEnvironment").invoke(null);
 			} else if (WrenchWrapper.getClass("net.fabricmc.loader.FabricLoader") != null
-				&& WrenchWrapper.getClass("net.neoforged.neoforge.common.NeoForge") == null) {
+				&& WrenchWrapper.getClass("net.minecraftforge.common.MinecraftForge") == null) {
 				// The above check immunizes Wrench Wrapper's wrapper against Sinytra Connector
 				var clazz = Objects.requireNonNull(WrenchWrapper.getClass("io.github.ennuil.ok_zoomer.wrench_wrapper.fabric.FabricWrapper"));
 				return (ConfigEnvironment) clazz.getMethod("getConfigEnvironment").invoke(null);
-			} else if (WrenchWrapper.getClass("net.neoforged.neoforge.common.NeoForge") != null) {
+			} else if (WrenchWrapper.getClass("net.minecraftforge.common.MinecraftForge") != null) {
 				var clazz = Objects.requireNonNull(WrenchWrapper.getClass("io.github.ennuil.ok_zoomer.wrench_wrapper.forge.ForgeWrapper"));
 				return (ConfigEnvironment) clazz.getMethod("getConfigEnvironment").invoke(null);
 			} else {

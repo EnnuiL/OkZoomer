@@ -132,13 +132,8 @@ public class ZoomUtils {
 		ZoomUtils.safeSmartOcclusion = true;
 	}
 
-	public static boolean hasSmartOcclusion() {
-		return OkZoomerConfigManager.CONFIG.tweaks.smartOcclusion.value() && ZoomUtils.safeSmartOcclusion;
-	}
-
 	public static boolean canSeeDistantEntities() {
 		return switch (OkZoomerConfigManager.CONFIG.tweaks.seeDistantEntities.value()) {
-			case SAFE -> ZoomUtils.safeSmartOcclusion;
 			case ON -> true;
 			case OFF -> false;
 		};

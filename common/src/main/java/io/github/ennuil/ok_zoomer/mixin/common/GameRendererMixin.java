@@ -30,22 +30,6 @@ public abstract class GameRendererMixin {
 		}
 	}
 
-	@ModifyExpressionValue(
-		method = "renderLevel",
-		at = @At(
-			value = "INVOKE",
-			target = "Ljava/lang/Integer;intValue()I",
-			remap = false
-		)
-	)
-	private int modifyCulling(int original) {
-		if (!Zoom.isZooming() || !ZoomUtils.hasSmartOcclusion()) {
-			return original;
-		} else {
-			return Mth.positiveCeilDiv(original, Math.max(1, Mth.floor(Zoom.getZoomDivisor())));
-		}
-	}
-
 	@ModifyReturnValue(method = "getFov", at = @At(value = "RETURN", ordinal = 1))
 	private double modifyFov(double original, @Local(argsOnly = true) float partialTicks) {
 		if (!Zoom.isTransitionActive()) {

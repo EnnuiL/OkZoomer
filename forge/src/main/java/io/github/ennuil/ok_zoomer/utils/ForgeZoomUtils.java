@@ -5,7 +5,10 @@ import net.minecraftforge.fml.ModList;
 
 import java.util.function.Predicate;
 
-public class NorgeZoomUtils {
+public class ForgeZoomUtils {
+	public static float translation = 0.0F;
+	public static float scale = 0.0F;
+
 	// TODO - Bad! We need client tags for this!
 	public static final Predicate<ItemStack> IS_VALID_SPYGLASS = stack -> stack.is(ZoomUtils.ZOOM_DEPENDENCIES_TAG);
 

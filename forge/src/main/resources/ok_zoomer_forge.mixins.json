@@ -15,7 +15,10 @@
 		"common.IntegratedServerMixin",
 		"common.MouseHandlerMixin",
 		"forge.BlockEntityRendererMixin",
-		"forge.MouseHandlerMixin"
+		"forge.GameRendererMixin",
+		"forge.GuiMixin",
+		"forge.MouseHandlerMixin",
+		"forge.VanillaGuiOverlayMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

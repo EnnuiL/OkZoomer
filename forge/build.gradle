@@ -58,7 +58,7 @@ dependencies {
 }
 
 mixin {
-	add sourceSets.main, 'mixins.ok_zoomer.refmap.json'
+	add sourceSets.main, 'ok_zoomer_forge.mixins.refmap.json'
 	config "ok_zoomer_forge.mixins.json"
 }
 
@@ -66,8 +66,4 @@ jar {
 	manifest.attributes([
 	    "MixinConfigs": "ok_zoomer_forge.mixins.json"
 	])
-}
-
-obfuscation {
-
 }

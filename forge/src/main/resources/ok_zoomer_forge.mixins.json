@@ -19,5 +19,6 @@
 	],
 	"injectors": {
 		"defaultRequire": 1
-	}
+	},
+	"refmap": "ok_zoomer_forge.mixins.refmap.json"
 }

@@ -6,7 +6,8 @@ import io.github.ennuil.ok_zoomer.config.screen.OkZoomerConfigScreen;
 import io.github.ennuil.ok_zoomer.events.ApplyLoadOnceOptionsEvent;
 import io.github.ennuil.ok_zoomer.utils.NorgeZoomUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.client.ConfigScreenHandler;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import org.quiltmc.config.api.annotations.ConfigFieldAnnotationProcessor;
 
@@ -18,7 +19,9 @@ public class OkZoomerClientMod {
 
 		ApplyLoadOnceOptionsEvent.readyClient(Minecraft.getInstance());
 
-		MinecraftForge.registerConfigScreen((mod2, screen) -> new OkZoomerConfigScreen(screen));
+		ModLoadingContext.get().registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class, () -> new ConfigScreenHandler.ConfigScreenFactory(
+			(mod2, screen) -> new OkZoomerConfigScreen(screen)
+		));
 
 		NorgeZoomUtils.defineSafeSmartOcclusion();
 		NorgeZoomUtils.addInitialPredicates();

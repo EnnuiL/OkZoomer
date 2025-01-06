@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "*"
+loaderVersion = "[47]"
 license = "All rights reserved"
 
 [[mods]]
@@ -13,16 +13,16 @@ A zoom mod that is powerful, lean, and pretty customizable. The zoom is yours!
 """
 
 [[dependencies.ok_zoomer]]
-modId = "forge"
+modId = "minecraft"
 mandatory = true
-versionRange = "[47.3.0,47.4.0)"
+versionRange = "[1.20.1,1.20.2)"
 ordering = "NONE"
 side = "CLIENT"
 
 [[dependencies.ok_zoomer]]
-modId = "minecraft"
+modId = "mixinextras"
 mandatory = true
-versionRange = "[1.20.1,1.20.2)"
+versionRange = "[0.4.1,)"
 ordering = "NONE"
 side = "CLIENT"
 

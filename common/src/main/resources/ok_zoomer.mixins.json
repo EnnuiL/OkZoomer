@@ -11,7 +11,6 @@
 		"EditBoxAccessor",
 		"EditBoxMixin",
 		"GameRendererMixin",
-		"GuiMixin",
 		"IntegratedServerMixin",
 		"MouseHandlerMixin"
 	],

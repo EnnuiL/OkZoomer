@@ -1,7 +1,6 @@
 package io.github.ennuil.ok_zoomer.utils;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import io.github.ennuil.ok_zoomer.config.ConfigEnums;
 import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.ok_zoomer.key_binds.ZoomKeyBinds;
 import io.github.ennuil.ok_zoomer.sound.ZoomSoundEvents;
@@ -36,46 +35,28 @@ public class ZoomUtils {
 
 	// The method used for changing the zoom divisor, used by zoom scrolling and the key binds
 	public static void changeZoomDivisor(boolean increase) {
-		if (OkZoomerConfigManager.CONFIG.features.scrollingMode.value() == ConfigEnums.ScrollingModes.EXPONENTIAL) {
-			int scrollBase = OkZoomerConfigManager.CONFIG.zoomValues.scrollBase.value();
-			int scrollResolution = OkZoomerConfigManager.CONFIG.zoomValues.scrollResolution.value();
-			int upperScrollStep = OkZoomerConfigManager.CONFIG.zoomValues.scrollStepLimit.value();
-			int lowerScrollStep = 0;
+		int scrollBase = OkZoomerConfigManager.CONFIG.zoomValues.scrollBase.value();
+		int scrollResolution = OkZoomerConfigManager.CONFIG.zoomValues.scrollResolution.value();
+		int upperScrollStep = OkZoomerConfigManager.CONFIG.zoomValues.scrollStepLimit.value();
+		int lowerScrollStep = 0;
 
-			int lastZoomStep = zoomStep;
-			zoomStep = increase ? Math.min(zoomStep + 1, upperScrollStep) :  Math.max(zoomStep - 1, -lowerScrollStep);
+		int lastZoomStep = zoomStep;
+		zoomStep = increase ? Math.min(zoomStep + 1, upperScrollStep) :  Math.max(zoomStep - 1, -lowerScrollStep);
 
-			double divisor = 1.0;
-			if (zoomStep != 0) {
-				divisor = Math.pow(scrollBase, (double) zoomStep / scrollResolution);
-				Zoom.setZoomDivisor(divisor);
-			} else {
-				Zoom.setZoomDivisor(1);
-			}
-
-			if (lastZoomStep != zoomStep) {
-				Minecraft.getInstance().player.playSound(ZoomSoundEvents.SCROLL, 1.0F, 1.0F);
-			}
-
-			if (OkZoomerConfigManager.CONFIG.tweaks.debugScrolling.value()) {
-				Minecraft.getInstance().player.displayClientMessage(Component.literal( zoomStep + " - " + divisor), true);
-			}
+		double divisor = 1.0;
+		if (zoomStep != 0) {
+			divisor = Math.pow(scrollBase, (double) zoomStep / scrollResolution);
+			Zoom.setZoomDivisor(divisor);
 		} else {
-			double zoomDivisor = OkZoomerConfigManager.CONFIG.legacyScrollValues.zoomDivisor.value();
-			double minimumZoomDivisor = OkZoomerConfigManager.CONFIG.legacyScrollValues.minimumZoomDivisor.value();
-			double maximumZoomDivisor = OkZoomerConfigManager.CONFIG.legacyScrollValues.maximumZoomDivisor.value();
-			int upperScrollStep = OkZoomerConfigManager.CONFIG.legacyScrollValues.upperScrollSteps.value();
-			int lowerScrollStep = OkZoomerConfigManager.CONFIG.legacyScrollValues.lowerScrollSteps.value();
+			Zoom.setZoomDivisor(1);
+		}
 
-			zoomStep = increase ? Math.min(zoomStep + 1, upperScrollStep) :  Math.max(zoomStep - 1, -lowerScrollStep);
+		if (lastZoomStep != zoomStep) {
+			Minecraft.getInstance().player.playSound(ZoomSoundEvents.SCROLL, 1.0F, 1.0F);
+		}
 
-			if (zoomStep > 0) {
-				Zoom.setZoomDivisor(zoomDivisor + ((maximumZoomDivisor - zoomDivisor) / upperScrollStep * zoomStep));
-			} else if (zoomStep == 0) {
-				Zoom.setZoomDivisor(zoomDivisor);
-			} else {
-				Zoom.setZoomDivisor(zoomDivisor + ((minimumZoomDivisor - zoomDivisor) / lowerScrollStep * -zoomStep));
-			}
+		if (OkZoomerConfigManager.CONFIG.tweaks.debugScrolling.value()) {
+			Minecraft.getInstance().player.displayClientMessage(Component.literal( zoomStep + " - " + divisor), true);
 		}
 	}
 
@@ -83,23 +64,16 @@ public class ZoomUtils {
 	public static void resetZoomDivisor(boolean userPrompted) {
 		if (!userPrompted && !OkZoomerConfigManager.CONFIG.tweaks.forgetZoomDivisor.value()) return;
 
-		if (OkZoomerConfigManager.CONFIG.features.scrollingMode.value() == ConfigEnums.ScrollingModes.EXPONENTIAL) {
-			int scrollBase = OkZoomerConfigManager.CONFIG.zoomValues.scrollBase.value();
-			int scrollResolution = OkZoomerConfigManager.CONFIG.zoomValues.scrollResolution.value();
-			zoomStep = OkZoomerConfigManager.CONFIG.zoomValues.defaultScrollStep.value();
-			Zoom.setZoomDivisor(Math.pow(scrollBase, (double) zoomStep / scrollResolution));
-		} else {
-			zoomStep = 0;
-			Zoom.setZoomDivisor(OkZoomerConfigManager.CONFIG.legacyScrollValues.zoomDivisor.value());
-		}
+		int scrollBase = OkZoomerConfigManager.CONFIG.zoomValues.scrollBase.value();
+		int scrollResolution = OkZoomerConfigManager.CONFIG.zoomValues.scrollResolution.value();
+		zoomStep = OkZoomerConfigManager.CONFIG.zoomValues.defaultScrollStep.value();
+		Zoom.setZoomDivisor(Math.pow(scrollBase, (double) zoomStep / scrollResolution));
 	}
 
 	public static void keepZoomStepsWithinBounds() {
-		boolean isExponential = OkZoomerConfigManager.CONFIG.features.scrollingMode.value() == ConfigEnums.ScrollingModes.EXPONENTIAL;
-		int upperScrollStep = isExponential ? OkZoomerConfigManager.CONFIG.zoomValues.scrollStepLimit.value() : OkZoomerConfigManager.CONFIG.legacyScrollValues.upperScrollSteps.value();
-		int lowerScrollStep = isExponential ? 0 : OkZoomerConfigManager.CONFIG.legacyScrollValues.lowerScrollSteps.value();
+		int upperScrollStep = OkZoomerConfigManager.CONFIG.zoomValues.scrollStepLimit.value();
 
-		zoomStep = Mth.clamp(zoomStep, -lowerScrollStep, upperScrollStep);
+		zoomStep = Mth.clamp(zoomStep, -0, upperScrollStep);
 	}
 
 	// The method used for unbinding the "Save Toolbar Activator"

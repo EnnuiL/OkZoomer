@@ -43,9 +43,6 @@ public class ZoomPresets {
 		Map.entry(OkZoomerConfigManager.CONFIG.zoomValues.scrollResolution, 10),
 		Map.entry(OkZoomerConfigManager.CONFIG.zoomValues.defaultScrollStep, 10),
 		Map.entry(OkZoomerConfigManager.CONFIG.zoomValues.scrollStepLimit, 20),
-		Map.entry(OkZoomerConfigManager.CONFIG.legacyScrollValues.zoomDivisor, 10.0),
-		Map.entry(OkZoomerConfigManager.CONFIG.legacyScrollValues.lowerScrollSteps, 8),
-		Map.entry(OkZoomerConfigManager.CONFIG.legacyScrollValues.upperScrollSteps, 16),
 		Map.entry(OkZoomerConfigManager.CONFIG.transitionValues.smoothTransitionFactor, 0.5),
 		Map.entry(OkZoomerConfigManager.CONFIG.tweaks.hideCrosshair, false),
 		Map.entry(OkZoomerConfigManager.CONFIG.tweaks.useSpyglassSounds, true)

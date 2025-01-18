@@ -10,6 +10,7 @@ import io.github.ennuil.ok_zoomer.zoom.modifiers.MultipliedCinematicCameraMouseM
 import io.github.ennuil.ok_zoomer.zoom.modifiers.ZoomDivisorMouseModifier;
 import io.github.ennuil.ok_zoomer.zoom.overlays.SpyglassZoomOverlay;
 import io.github.ennuil.ok_zoomer.zoom.overlays.ZoomerZoomOverlay;
+import io.github.ennuil.ok_zoomer.zoom.transitions.EasedTransitionMode;
 import io.github.ennuil.ok_zoomer.zoom.transitions.InstantTransitionMode;
 import io.github.ennuil.ok_zoomer.zoom.transitions.LinearTransitionMode;
 import io.github.ennuil.ok_zoomer.zoom.transitions.SmoothTransitionMode;
@@ -31,6 +32,7 @@ public class OkZoomerConfigManager {
 			switch (CONFIG.features.zoomTransition.value()) {
 				case SMOOTH -> new SmoothTransitionMode(CONFIG.transitionValues.smoothTransitionFactor.value().floatValue());
 				case LINEAR -> new LinearTransitionMode(CONFIG.transitionValues.linearStep.value());
+				case EXPERIMENTAL -> new EasedTransitionMode();
 				default -> new InstantTransitionMode();
 			}
 		);

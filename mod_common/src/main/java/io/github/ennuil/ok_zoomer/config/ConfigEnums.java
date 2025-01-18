@@ -10,18 +10,14 @@ public class ConfigEnums {
 	public enum ZoomTransitionOptions implements ConfigEnum {
 		OFF,
 		SMOOTH,
-		LINEAR
+		LINEAR,
+		EXPERIMENTAL
 	}
 
 	public enum ZoomModes implements ConfigEnum {
 		HOLD,
 		TOGGLE,
 		PERSISTENT
-	}
-
-	public enum ScrollingModes implements ConfigEnum {
-		EXPONENTIAL,
-		LEGACY
 	}
 
 	public enum ZoomOverlays implements ConfigEnum {

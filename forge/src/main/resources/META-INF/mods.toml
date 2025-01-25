@@ -26,13 +26,6 @@ versionRange = "[47.1.3,)"
 ordering = "NONE"
 side = "CLIENT"
 
-[[dependencies.ok_zoomer]]
-modId = "mixinextras"
-mandatory = true
-versionRange = "[0.4.1,)"
-ordering = "NONE"
-side = "CLIENT"
-
 [mc-publish]
 modrinth = "${modrinth_id}"
 curseforge = "${curseforge_id}"

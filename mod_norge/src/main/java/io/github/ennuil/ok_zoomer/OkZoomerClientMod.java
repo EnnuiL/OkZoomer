@@ -1,5 +1,6 @@
 package io.github.ennuil.ok_zoomer;
 
+import io.github.ennuil.ok_zoomer.compat.AccessoriesCompat;
 import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.ok_zoomer.config.metadata.WidgetSize;
 import io.github.ennuil.ok_zoomer.config.screen.OkZoomerConfigScreen;
@@ -10,6 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import org.quiltmc.config.api.annotations.ConfigFieldAnnotationProcessor;
@@ -27,5 +29,10 @@ public class OkZoomerClientMod {
 
 		NorgeZoomUtils.defineSafeSmartOcclusion();
 		NorgeZoomUtils.addInitialPredicates();
+
+		// Mod Compat
+		if (ModList.get().isLoaded("accessories")) {
+			AccessoriesCompat.init();
+		}
 	}
 }

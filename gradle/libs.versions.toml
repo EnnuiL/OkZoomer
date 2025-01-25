@@ -11,8 +11,7 @@ fabric_api = "0.114.0+1.21.4"
 wrench_wrapper = "0.6.1"
 
 modmenu = "13.0.0-beta.1"
-trinkets = "3.10.0"
-cca = "6.1.1"
+accessories = "1.2.15-beta+1.21.4"
 
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
@@ -23,13 +22,11 @@ fabric_api = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fab
 wrench_wrapper = { module = "io.github.ennuil:wrench_wrapper", version.ref = "wrench_wrapper" }
 modmenu = { module = "com.terraformersmc:modmenu", version.ref = "modmenu" }
 
-trinkets = { module = "dev.emi:trinkets", version.ref = "trinkets" }
-cca_base = { module = "org.ladysnake.cardinal-components-api:cardinal-components-base", version.ref = "cca" }
-cca_entity = { module = "org.ladysnake.cardinal-components-api:cardinal-components-entity", version.ref = "cca" }
+accessories_fabric = { module = "io.wispforest:accessories-fabric", version.ref = "accessories" }
+accessories_norge = { module = "io.wispforest:accessories-neoforge", version.ref = "accessories" }
 
 # If you have multiple similar dependencies, you can declare a dependency bundle and reference it on the build script with "libs.bundles.example".
 [bundles]
-trinkets = ["trinkets", "cca_base", "cca_entity"]
 
 [plugins]
 fabric_loom = { id = "fabric-loom", version.ref = "fabric_loom" }
